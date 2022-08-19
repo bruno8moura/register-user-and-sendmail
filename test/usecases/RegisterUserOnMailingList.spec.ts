@@ -36,13 +36,20 @@ describe('Register use on mailing list use case', () => {
     expect(user).toBeUndefined()
   })
 
-  test('should add user with complete data to mailing list', async () => {
+  test('should return user if user is found', async () => {
     const { useCase, repository } = makeSut()
     const name = 'any_name'
     const email = 'any@email.com'
-    const response = await useCase.registerUserOnMailingList({ name, email })
+    await useCase.registerUserOnMailingList({ name, email })
     const user = await repository.findUserByEmail('any@email.com')
-    expect(user.name).toBe('any_name')
+    expect(user).toEqual({ name, email })
+  })
+
+  test('should add user with complete data to mailing list', async () => {
+    const { useCase } = makeSut()
+    const name = 'any_name'
+    const email = 'any@email.com'
+    const response = await useCase.registerUserOnMailingList({ name, email })
     expect(response).toBeUndefined()
   })
 })
