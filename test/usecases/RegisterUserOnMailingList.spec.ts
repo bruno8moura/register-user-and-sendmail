@@ -1,8 +1,9 @@
+import { EmailAlreadyRegisteredException } from '../../src/usecases/errors/EmailAlreadyRegisteredException'
 import { UserRepository } from '../../src/usecases/ports/UserRepository'
 import { RegisterUserOnMailingList } from '../../src/usecases/RegisterUserOnMailingList'
 import { UserData } from '../../src/usecases/UserData'
 
-const makeInMemoryRepository = () => {
+const makeInMemoryRepository = (): UserRepository => {
   class InMemoryUserRepository implements UserRepository {
     private repository: UserData[] = []
     async add (userData: UserData): Promise<void> {
@@ -51,5 +52,20 @@ describe('Register use on mailing list use case', () => {
     const email = 'any@email.com'
     const response = await useCase.registerUserOnMailingList({ name, email })
     expect(response).toBeUndefined()
+  })
+
+  test('should not add two users with same email', async () => {
+    const { useCase } = makeSut()
+    const name = 'any_name'
+    const email = 'any@email.com'
+    try {
+      const response = await useCase.registerUserOnMailingList({ name, email })
+      expect(response).toBeUndefined()
+
+      await useCase.registerUserOnMailingList({ name, email })
+    } catch (error) {
+      expect(error).toBeInstanceOf(EmailAlreadyRegisteredException)
+      expect(error.message).toEqual('Email already registered')
+    }
   })
 })
