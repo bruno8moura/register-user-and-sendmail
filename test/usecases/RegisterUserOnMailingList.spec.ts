@@ -27,6 +27,15 @@ const makeSut = () => {
 }
 
 describe('Register use on mailing list use case', () => {
+  test('should return "undefined" if user is not found', async () => {
+    const { useCase, repository } = makeSut()
+    const name = 'any_name'
+    const email = 'any@email.com'
+    await useCase.registerUserOnMailingList({ name, email })
+    const user = await repository.findUserByEmail('any_other@email.com')
+    expect(user).toBeUndefined()
+  })
+
   test('should add user with complete data to mailing list', async () => {
     const { useCase, repository } = makeSut()
     const name = 'any_name'
