@@ -35,4 +35,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should not accept domain part larger than 255 chars', () => {
+    const email = 'l'.repeat(5).concat('@').concat('m'.repeat(256)).concat('.').concat('com')
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
