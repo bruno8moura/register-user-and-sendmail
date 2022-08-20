@@ -7,4 +7,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should not accept empty strings', () => {
+    const email = ''
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
