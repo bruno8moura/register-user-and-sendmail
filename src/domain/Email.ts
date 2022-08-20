@@ -1,3 +1,4 @@
+import { VALID_CHARS } from './enums/email/regex'
 
 interface Params {
     input: string
@@ -8,9 +9,7 @@ export class Email {
     if (!input) return false
     if (input.length > 320) return false
 
-    const emailRegex = /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
-
-    if (!emailRegex.test(input)) return false
+    if (!VALID_CHARS.test(input)) return false
 
     const [local, domain] = input.split('@')
 
