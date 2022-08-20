@@ -14,4 +14,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should accept valid email', () => {
+    const email = 'any@mail.com'
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeTruthy()
+  })
 })
