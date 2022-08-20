@@ -84,4 +84,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should not accept email without an at-sign', () => {
+    const email = 'any.@any.com'
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
