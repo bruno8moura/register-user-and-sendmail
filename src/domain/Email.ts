@@ -6,6 +6,11 @@ interface Params {
 export class Email {
   static validate ({ input }: Params): boolean {
     if (!input) return false
+    if (input.length > 320) return false
+
+    const emailRegex = /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
+
+    if (!emailRegex.test(input)) return false
 
     const [local, domain] = input.split('@')
 
@@ -19,8 +24,6 @@ export class Email {
     if (someDomainPartGreaterThan63) {
       return false
     }
-
-    if (input.length > 320) return false
 
     return true
   }
