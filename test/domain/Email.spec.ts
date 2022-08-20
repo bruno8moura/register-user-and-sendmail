@@ -28,4 +28,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should not accept string larger than 320 chars', () => {
+    const email = 'l'.repeat(64).concat('@').concat('mail'.repeat(150)).concat('.').concat('com'.repeat(150))
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
