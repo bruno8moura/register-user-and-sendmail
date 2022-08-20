@@ -49,4 +49,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should not accept empty domain part', () => {
+    const email = 'any@'
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
