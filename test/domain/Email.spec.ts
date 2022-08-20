@@ -42,4 +42,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeFalsy()
   })
+
+  test('should not accept empty local part', () => {
+    const email = '@mail.com'
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
