@@ -21,4 +21,11 @@ describe('Domain :: EmailValidation', () => {
 
     expect(result).toBeTruthy()
   })
+
+  test('should not accept local part larger than 64 chars', () => {
+    const email = 'l'.repeat(65).concat('@mail.com')
+    const result = Email.validate({ input: email })
+
+    expect(result).toBeFalsy()
+  })
 })
