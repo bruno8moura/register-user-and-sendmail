@@ -3,7 +3,7 @@ import { InvalidNameError } from '../../src/domain/errors/InvalidNameError'
 import { User } from '../../src/domain/User'
 import { left } from '../../src/shared/util/Either'
 
-describe('Drivers :: CreateUser', () => {
+describe('Domain :: CreateUser', () => {
   test('should not create user with invalid e-mail address', () => {
     const invalidEmail = 'invalid_email'
     const error = User.create({
