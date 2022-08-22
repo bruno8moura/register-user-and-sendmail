@@ -1,8 +1,9 @@
 import { InvalidEmailError } from '../../src/domain/errors/InvalidEmailError'
+import { InvalidNameError } from '../../src/domain/errors/InvalidNameError'
 import { User } from '../../src/domain/User'
 import { left } from '../../src/shared/util/Either'
 
-describe.only('Drivers :: CreateUser', () => {
+describe('Drivers :: CreateUser', () => {
   test('should not create user with invalid e-mail address', () => {
     const invalidEmail = 'invalid_email'
     const error = User.create({
@@ -10,6 +11,16 @@ describe.only('Drivers :: CreateUser', () => {
       email: invalidEmail
     })
 
-    expect(error).toEqual(left(new InvalidEmailError({ email: invalidEmail })))
+    expect(error).toEqual(left(new InvalidEmailError({ input: invalidEmail })))
+  })
+
+  test('should not create user with invalid name (too few characters)', () => {
+    const invalidName = '0        '
+    const error = User.create({
+      name: invalidName,
+      email: 'any@mail.com'
+    })
+
+    expect(error).toEqual(left(new InvalidNameError({ input: invalidName })))
   })
 })
