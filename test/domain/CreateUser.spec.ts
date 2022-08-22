@@ -23,4 +23,14 @@ describe('Drivers :: CreateUser', () => {
 
     expect(error).toEqual(left(new InvalidNameError({ input: invalidName })))
   })
+
+  test('should not create user with invalid name (too many characters)', () => {
+    const invalidName = '0'.repeat(257)
+    const error = User.create({
+      name: invalidName,
+      email: 'any@mail.com'
+    })
+
+    expect(error).toEqual(left(new InvalidNameError({ input: invalidName })))
+  })
 })
