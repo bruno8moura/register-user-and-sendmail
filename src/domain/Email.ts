@@ -8,7 +8,7 @@ interface Params {
 
 export class Email {
   private readonly email: string
-  constructor ({ input }: Params) {
+  private constructor ({ input }: Params) {
     this.email = input
   }
 
