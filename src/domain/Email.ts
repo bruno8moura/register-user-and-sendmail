@@ -1,10 +1,25 @@
+import { Either, left, right } from '../shared/util/Either'
 import { VALID_CHARS } from './enums/email/regex'
+import { InvalidEmailError } from './errors/InvalidEmailError'
 
 interface Params {
     input: string
 }
 
 export class Email {
+  private readonly email: string
+  constructor ({ input }: Params) {
+    this.email = input
+  }
+
+  static create ({ input }: Params): Either<InvalidEmailError, Email> {
+    if (!Email.validate({ input })) {
+      return left(new InvalidEmailError({ email: input }))
+    }
+
+    return right(new Email({ input }))
+  }
+
   static validate ({ input }: Params): boolean {
     if (!input) return false
     if (input.length > 320) return false
