@@ -1,12 +1,15 @@
-import { Either } from '../shared/util/Either'
 import { UserData } from '../usecases/UserData'
 import { Email } from './Email'
-import { InvalidEmailError } from './errors/InvalidEmailError'
+import { InvalidUserDataError } from './errors/InvalidUserDataError'
+import { Name } from './Name'
+import { Either } from '../shared/util/Either'
 
 export class User {
-  static create ({ email }: UserData): Either<InvalidEmailError, User> {
-    const result = Email.create({ input: email })
+  static create ({ name, email }: UserData): Either<InvalidUserDataError, User> {
+    const nameOrError = Name.create({ input: name })
+    const emailOrError = Email.create({ input: email })
 
-    return result
+    if (nameOrError.isLeft()) return nameOrError
+    if (emailOrError.isLeft()) return emailOrError
   }
 }

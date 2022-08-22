@@ -14,7 +14,7 @@ export class Email {
 
   static create ({ input }: Params): Either<InvalidEmailError, Email> {
     if (!Email.validate({ input })) {
-      return left(new InvalidEmailError({ email: input }))
+      return left(new InvalidEmailError({ input }))
     }
 
     return right(new Email({ input }))

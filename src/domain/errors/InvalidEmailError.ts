@@ -1,9 +1,7 @@
-interface Params {
-    email: string
-}
+import { InvalidUserDataError, Params } from './InvalidUserDataError'
 
-export class InvalidEmailError extends Error {
-  constructor ({ email }: Params) {
-    super(`The email "${email}" is invalid`)
+export class InvalidEmailError extends InvalidUserDataError {
+  constructor ({ input }: Params) {
+    super({ input: `The email "${input}" is invalid` })
   }
 }
