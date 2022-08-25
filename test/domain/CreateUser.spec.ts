@@ -33,4 +33,17 @@ describe('Domain :: CreateUser', () => {
 
     expect(error).toEqual(left(new InvalidNameError({ input: invalidName })))
   })
+
+  test('should create user with valid data', () => {
+    const expected = {
+      name: 'any_name',
+      email: 'any@mail.com'
+    }
+    const createdUser = User.create({
+      name: 'any_name',
+      email: 'any@mail.com'
+    }).value
+
+    expect(createdUser).toEqual(expected)
+  })
 })
