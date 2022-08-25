@@ -2,14 +2,25 @@ import { UserData } from '../usecases/UserData'
 import { Email } from './Email'
 import { InvalidUserDataError } from './errors/InvalidUserDataError'
 import { Name } from './Name'
-import { Either } from '../shared/util/Either'
-
+import { Either, left, right } from '../shared/util/Either'
+import { InvalidNameError } from './errors/InvalidNameError'
+import { InvalidEmailError } from './errors/InvalidEmailError'
 export class User {
+  private readonly name
+  private readonly email
+
+  private constructor ({ name, email }: UserData) {
+    this.name = name
+    this.email = email
+  }
+
   static create ({ name, email }: UserData): Either<InvalidUserDataError, User> {
     const nameOrError = Name.create({ input: name })
     const emailOrError = Email.create({ input: email })
 
-    if (nameOrError.isLeft()) return nameOrError
-    if (emailOrError.isLeft()) return emailOrError
+    if (nameOrError.isLeft()) return left(new InvalidNameError({ input: name }))
+    if (emailOrError.isLeft()) return left(new InvalidEmailError({ input: email }))
+
+    return right(new User({ name, email }))
   }
 }
