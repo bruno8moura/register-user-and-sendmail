@@ -66,6 +66,6 @@ describe('Register use on mailing list use case', () => {
 
     const nOk = await useCase.registerUserOnMailingList(userData)
     expect(nOk.value).toBeInstanceOf(EmailAlreadyRegisteredError)
-    // expect(error.message).toEqual('Email already registered')
+    expect((nOk.value as EmailAlreadyRegisteredError).message).toEqual(`Email ${email} already registered`)
   })
 })
