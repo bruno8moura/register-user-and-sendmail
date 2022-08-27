@@ -1,4 +1,4 @@
-import { EmailAlreadyRegisteredException } from '../../src/usecases/errors/EmailAlreadyRegisteredException'
+import { EmailAlreadyRegisteredError } from '../../src/shared/errors/EmailAlreadyRegisteredError'
 import { UserRepository } from '../../src/usecases/ports/UserRepository'
 import { RegisterUserOnMailingList } from '../../src/usecases/RegisterUserOnMailingList'
 import { UserData } from '../../src/usecases/UserData'
@@ -65,7 +65,7 @@ describe('Register use on mailing list use case', () => {
     expect(ok.value).toBe(userData)
 
     const nOk = await useCase.registerUserOnMailingList(userData)
-    expect(nOk.value).toBeInstanceOf(EmailAlreadyRegisteredException)
+    expect(nOk.value).toBeInstanceOf(EmailAlreadyRegisteredError)
     // expect(error.message).toEqual('Email already registered')
   })
 })
