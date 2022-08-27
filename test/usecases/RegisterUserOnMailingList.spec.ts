@@ -1,5 +1,6 @@
 import { EmailAlreadyRegisteredError } from '../../src/shared/errors/EmailAlreadyRegisteredError'
 import { InvalidEmailError } from '../../src/shared/errors/InvalidEmailError'
+import { InvalidNameError } from '../../src/shared/errors/InvalidNameError'
 import { UserRepository } from '../../src/usecases/ports/UserRepository'
 import { RegisterUserOnMailingList } from '../../src/usecases/RegisterUserOnMailingList'
 import { UserData } from '../../src/usecases/UserData'
@@ -79,6 +80,18 @@ describe('Register use on mailing list use case', () => {
     const result = (await useCase.registerUserOnMailingList(userData)).value
     expect(result).toBeInstanceOf(InvalidEmailError)
     expect((result as InvalidEmailError).message).toEqual(`The email "${email}" is invalid`)
+    expect(JSON.stringify(result)).toBe(JSON.stringify(expected))
+  })
+
+  test('should not add user with invalid name to mailing list', async () => {
+    const expected = new InvalidNameError({ input: 'email.com' })
+    const { useCase } = makeSut()
+    const name = '0          '
+    const email = 'any@email.com'
+    const userData: UserData = { name, email }
+    const result = (await useCase.registerUserOnMailingList(userData)).value
+    expect(result).toBeInstanceOf(InvalidNameError)
+    expect((result as InvalidNameError).message).toEqual(`The name "${name}" is invalid`)
     expect(JSON.stringify(result)).toBe(JSON.stringify(expected))
   })
 })
