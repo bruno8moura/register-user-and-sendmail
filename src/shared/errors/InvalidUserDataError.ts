@@ -2,8 +2,10 @@ export interface Params {
     input: string
 }
 
-export class InvalidUserDataError extends Error {
+export abstract class InvalidUserDataError extends Error {
   constructor ({ input }: Params) {
     super(input)
   }
+
+  abstract get name(): string
 }
