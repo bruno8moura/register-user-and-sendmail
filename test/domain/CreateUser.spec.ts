@@ -1,5 +1,5 @@
-import { InvalidEmailError } from '../../src/shared/errors/InvalidEmailError'
-import { InvalidNameError } from '../../src/shared/errors/InvalidNameError'
+import { InvalidEmailError } from '../../src/domain/errors/InvalidEmailError'
+import { InvalidNameError } from '../../src/domain/errors/InvalidNameError'
 import { User } from '../../src/domain/User'
 
 describe('Domain :: CreateUser', () => {

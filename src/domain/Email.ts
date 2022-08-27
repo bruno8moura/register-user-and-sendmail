@@ -1,6 +1,6 @@
 import { Either, left, right } from '../shared/util/Either'
 import { VALID_CHARS } from './enums/email/regex'
-import { InvalidEmailError } from '../shared/errors/InvalidEmailError'
+import { InvalidEmailError } from './errors/InvalidEmailError'
 
 interface Params {
     input: string

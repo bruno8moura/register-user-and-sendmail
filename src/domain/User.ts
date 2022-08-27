@@ -1,10 +1,10 @@
 import { UserData } from '../usecases/UserData'
 import { Email } from './Email'
-import { InvalidUserDataError } from '../shared/errors/InvalidUserDataError'
+import { InvalidUserDataError } from './errors/InvalidUserDataError'
 import { Name } from './Name'
 import { Either, left, right } from '../shared/util/Either'
-import { InvalidNameError } from '../shared/errors/InvalidNameError'
-import { InvalidEmailError } from '../shared/errors/InvalidEmailError'
+import { InvalidNameError } from './errors/InvalidNameError'
+import { InvalidEmailError } from './errors/InvalidEmailError'
 export class User {
   private readonly name
   private readonly email

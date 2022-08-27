@@ -1,7 +1,7 @@
-import { InvalidUserDataError } from '../shared/errors/InvalidUserDataError'
+import { InvalidUserDataError } from '../domain/errors/InvalidUserDataError'
 import { User } from '../domain/User'
 import { Either, left, right } from '../shared/util/Either'
-import { EmailAlreadyRegisteredError } from '../shared/errors/EmailAlreadyRegisteredError'
+import { EmailAlreadyRegisteredError } from '../domain/errors/EmailAlreadyRegisteredError'
 import { UserRepository } from './ports/UserRepository'
 import { UserData } from './UserData'
 

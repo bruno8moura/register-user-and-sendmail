@@ -1,5 +1,5 @@
 import { Either, left, right } from '../shared/util/Either'
-import { InvalidNameError } from '../shared/errors/InvalidNameError'
+import { InvalidNameError } from './errors/InvalidNameError'
 
 interface Params {
     input: string
