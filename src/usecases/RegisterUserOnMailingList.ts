@@ -1,3 +1,6 @@
+import { InvalidUserDataError } from '../domain/errors/InvalidUserDataError'
+import { User } from '../domain/User'
+import { Either, left, right } from '../shared/util/Either'
 import { EmailAlreadyRegisteredException } from './errors/EmailAlreadyRegisteredException'
 import { UserRepository } from './ports/UserRepository'
 import { UserData } from './UserData'
@@ -8,9 +11,15 @@ export class RegisterUserOnMailingList {
       this.repository = repository
     }
 
-    async registerUserOnMailingList ({ name, email }: UserData): Promise<void> {
-      const foundUser = await this.repository.findUserByEmail(email)
-      if (foundUser) throw new EmailAlreadyRegisteredException()
-      await this.repository.add({ name, email })
+    async registerUserOnMailingList (request: UserData): Promise<Either<InvalidUserDataError, UserData>> {
+      const foundUser = await this.repository.findUserByEmail(request.email)
+      if (foundUser) return left(new EmailAlreadyRegisteredException())
+
+      const userOrError = User.create(request)
+      if (userOrError.isLeft()) return left(userOrError.value)
+
+      await this.repository.add(request)
+
+      return right(request)
     }
 }

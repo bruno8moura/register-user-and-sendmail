@@ -50,22 +50,22 @@ describe('Register use on mailing list use case', () => {
     const { useCase } = makeSut()
     const name = 'any_name'
     const email = 'any@email.com'
-    const response = await useCase.registerUserOnMailingList({ name, email })
-    expect(response).toBeUndefined()
+    const userData: UserData = { name, email }
+    const result = await useCase.registerUserOnMailingList(userData)
+
+    expect(result.value).toBe(userData)
   })
 
   test('should not add two users with same email', async () => {
     const { useCase } = makeSut()
     const name = 'any_name'
     const email = 'any@email.com'
-    try {
-      const response = await useCase.registerUserOnMailingList({ name, email })
-      expect(response).toBeUndefined()
+    const userData: UserData = { name, email }
+    const ok = await useCase.registerUserOnMailingList(userData)
+    expect(ok.value).toBe(userData)
 
-      await useCase.registerUserOnMailingList({ name, email })
-    } catch (error) {
-      expect(error).toBeInstanceOf(EmailAlreadyRegisteredException)
-      expect(error.message).toEqual('Email already registered')
-    }
+    const nOk = await useCase.registerUserOnMailingList(userData)
+    expect(nOk.value).toBeInstanceOf(EmailAlreadyRegisteredException)
+    // expect(error.message).toEqual('Email already registered')
   })
 })
