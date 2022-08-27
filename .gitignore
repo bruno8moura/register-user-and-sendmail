@@ -3,3 +3,4 @@ bkp_modules
 dist
 coverage
 tmp
+.nyc_output
