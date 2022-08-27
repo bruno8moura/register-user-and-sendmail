@@ -5,12 +5,14 @@ import { User } from '../../src/domain/User'
 describe('Domain :: CreateUser', () => {
   test('should not create user with invalid e-mail address', () => {
     const invalidEmail = 'invalid_email'
+    const expectedErrorMessage = `The email "${invalidEmail}" is invalid`
     const error = User.create({
       name: 'any_name',
       email: invalidEmail
-    }).value
+    }).value as InvalidEmailError
 
-    expect(error).toEqual(new InvalidEmailError({ input: invalidEmail }))
+    expect(error.name).toEqual('InvalidEmailError')
+    expect(error.message).toEqual(expectedErrorMessage)
   })
 
   test('should not create user with invalid name (too few characters)', () => {
