@@ -1,4 +1,5 @@
 import { EmailAlreadyRegisteredError } from '../../src/shared/errors/EmailAlreadyRegisteredError'
+import { InvalidEmailError } from '../../src/shared/errors/InvalidEmailError'
 import { UserRepository } from '../../src/usecases/ports/UserRepository'
 import { RegisterUserOnMailingList } from '../../src/usecases/RegisterUserOnMailingList'
 import { UserData } from '../../src/usecases/UserData'
@@ -67,5 +68,17 @@ describe('Register use on mailing list use case', () => {
     const nOk = await useCase.registerUserOnMailingList(userData)
     expect(nOk.value).toBeInstanceOf(EmailAlreadyRegisteredError)
     expect((nOk.value as EmailAlreadyRegisteredError).message).toEqual(`Email ${email} already registered`)
+  })
+
+  test('should not add user with invalid email to mailing list', async () => {
+    const expected = new InvalidEmailError({ input: 'email.com' })
+    const { useCase } = makeSut()
+    const name = 'any_name'
+    const email = 'email.com'
+    const userData: UserData = { name, email }
+    const result = (await useCase.registerUserOnMailingList(userData)).value
+    expect(result).toBeInstanceOf(InvalidEmailError)
+    expect((result as InvalidEmailError).message).toEqual(`The email "${email}" is invalid`)
+    expect(JSON.stringify(result)).toBe(JSON.stringify(expected))
   })
 })
