@@ -1,4 +1,4 @@
-import { InvalidUserDataError, Params } from './InvalidUserDataError'
+import { InvalidUserDataError, Params } from '@/domain/errors'
 
 export class EmailAlreadyRegisteredError extends InvalidUserDataError {
   constructor ({ input }: Params) {

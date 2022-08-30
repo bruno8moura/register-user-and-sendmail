@@ -1,9 +1,6 @@
-import { EmailAlreadyRegisteredError } from '../../src/domain/errors/EmailAlreadyRegisteredError'
-import { InvalidEmailError } from '../../src/domain/errors/InvalidEmailError'
-import { InvalidNameError } from '../../src/domain/errors/InvalidNameError'
-import { UserRepository } from '../../src/usecases/ports/UserRepository'
-import { RegisterUserOnMailingList } from '../../src/usecases/RegisterUserOnMailingList'
-import { UserData } from '../../src/usecases/UserData'
+import { InvalidEmailError, InvalidNameError, EmailAlreadyRegisteredError, UserData } from '@/domain'
+import { UserRepository } from '@/usecases/ports/UserRepository'
+import { RegisterUserOnMailingList } from '@/usecases/RegisterUserOnMailingList'
 
 const makeInMemoryRepository = (): UserRepository => {
   class InMemoryUserRepository implements UserRepository {

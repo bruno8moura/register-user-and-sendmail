@@ -1,4 +1,4 @@
-import { UserData } from '../UserData'
+import { UserData } from '@/domain'
 
 export interface UserRepository {
     findUserByEmail(email: string): Promise<UserData>

@@ -1,6 +1,4 @@
-import { InvalidEmailError } from '../../src/domain/errors/InvalidEmailError'
-import { InvalidNameError } from '../../src/domain/errors/InvalidNameError'
-import { User } from '../../src/domain/User'
+import { InvalidEmailError, InvalidNameError, User } from '@/domain'
 
 describe('Domain :: CreateUser', () => {
   test('should not create user with invalid email address', () => {

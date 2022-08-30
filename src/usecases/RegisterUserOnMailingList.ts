@@ -1,9 +1,6 @@
-import { InvalidUserDataError } from '../domain/errors/InvalidUserDataError'
-import { User } from '../domain/User'
-import { Either, left, right } from '../shared/util/Either'
-import { EmailAlreadyRegisteredError } from '../domain/errors/EmailAlreadyRegisteredError'
-import { UserRepository } from './ports/UserRepository'
-import { UserData } from './UserData'
+import { EmailAlreadyRegisteredError, InvalidUserDataError, User, UserData } from '@/domain'
+import { Either, left, right } from '@/shared/util/Either'
+import { UserRepository } from '@/usecases/ports/UserRepository'
 
 export class RegisterUserOnMailingList {
     private repository: UserRepository

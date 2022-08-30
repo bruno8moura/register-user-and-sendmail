@@ -1,6 +1,9 @@
-import { Either, left, right } from '../shared/util/Either'
-import { InvalidNameError } from './errors/InvalidNameError'
-
+import {
+  Either,
+  left,
+  right
+} from '@/shared/util/Either'
+import { InvalidNameError } from '@/domain/errors'
 interface Params {
     input: string
 }

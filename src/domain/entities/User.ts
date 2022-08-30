@@ -1,13 +1,23 @@
-import { UserData } from '../usecases/UserData'
-import { Email } from './Email'
-import { InvalidUserDataError } from './errors/InvalidUserDataError'
-import { Name } from './Name'
-import { Either, left, right } from '../shared/util/Either'
-import { InvalidNameError } from './errors/InvalidNameError'
-import { InvalidEmailError } from './errors/InvalidEmailError'
+import {
+  Email
+} from '@/domain/entities/Email'
+
+import { Name } from '@/domain/entities/Name'
+import {
+  InvalidEmailError,
+  InvalidNameError,
+  InvalidUserDataError
+} from '@/domain/errors'
+import { UserData } from '@/domain/entities/UserData'
+import {
+  Either,
+  left,
+  right
+} from '@/shared/util/Either'
+
 export class User {
-  private readonly name
-  private readonly email
+  private readonly name: string
+  private readonly email: string
 
   private constructor ({ name, email }: UserData) {
     this.name = name

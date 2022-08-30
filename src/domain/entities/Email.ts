@@ -1,6 +1,6 @@
-import { Either, left, right } from '../shared/util/Either'
-import { VALID_CHARS } from './enums/email/regex'
-import { InvalidEmailError } from './errors/InvalidEmailError'
+import { Either, left, right } from '@/shared/util/Either'
+import { VALID_CHARS } from '@/domain/enums/email/regex'
+import { InvalidEmailError } from '@/domain/errors'
 
 interface Params {
     input: string
