@@ -9,8 +9,12 @@ export class RegisterUserWebController {
 
     async handle ({ body }: HttpRequest): Promise<HttpResponse> {
       const { name, email } = body
-      const { value } = await this.useCase.execute({ name, email })
+      const result = await this.useCase.execute({ name, email })
 
-      return HttpResponseHelper.created({ body: value })
+      if (result.isLeft()) {
+        return HttpResponseHelper.badRequest({ error: result.value })
+      }
+
+      return HttpResponseHelper.created({ body: result.value })
     }
 }
