@@ -1,4 +1,4 @@
-import { InvalidNameError } from '@/domain'
+import { InvalidEmailError, InvalidNameError } from '@/domain'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
 import { HttpResponse } from '@/interfaces/webcontrollers/ports/HttpResponse'
 import { RegisterUserUseCase } from '@/interfaces/webcontrollers/ports/RegisterUserUseCase'
@@ -72,6 +72,34 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
         isLeft: () => true,
         isRight: () => false,
         value: new InvalidNameError({ input: request.body.name })
+      })
+    })
+
+    const result: HttpResponse = await controller.handle(request)
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  test('should return status code 400 when request contains invalid email', async () => {
+    const request: HttpRequest = {
+      body: {
+        name: 'Any Name',
+        email: 'invalid email'
+      }
+    }
+
+    const expected = {
+      body: new InvalidEmailError({ input: request.body.email }),
+      statusCode: 400
+    }
+
+    const { controller, useCase } = makeSut()
+
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(async () => {
+      return Promise.resolve({
+        isLeft: () => true,
+        isRight: () => false,
+        value: new InvalidEmailError({ input: request.body.email })
       })
     })
 
