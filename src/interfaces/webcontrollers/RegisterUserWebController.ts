@@ -1,6 +1,7 @@
 import { RegisterUserUseCase } from './ports/RegisterUserUseCase'
 import { HttpRequest } from './ports'
 import { HttpResponse } from './ports/HttpResponse'
+import { HttpResponseHelper } from './helper/HttpResponseHelper'
 
 export class RegisterUserWebController {
     private readonly useCase: RegisterUserUseCase
@@ -10,8 +11,8 @@ export class RegisterUserWebController {
 
     async handle ({ body }: HttpRequest): Promise<HttpResponse> {
       const { name, email } = body
-      const result = await this.useCase.execute({ name, email })
+      const { value } = await this.useCase.execute({ name, email })
 
-      return Promise.resolve({ statusCode: 201, body: result.value })
+      return HttpResponseHelper.created({ body: value })
     }
 }
