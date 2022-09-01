@@ -1,7 +1,5 @@
-import { RegisterUserUseCase } from './ports/RegisterUserUseCase'
-import { HttpRequest } from './ports'
-import { HttpResponse } from './ports/HttpResponse'
-import { HttpResponseHelper } from './helper/HttpResponseHelper'
+import { HttpRequest, HttpResponse, RegisterUserUseCase } from '@/interfaces/webcontrollers/ports'
+import { HttpResponseHelper } from '@/interfaces/webcontrollers/helper/HttpResponseHelper'
 
 export class RegisterUserWebController {
     private readonly useCase: RegisterUserUseCase
