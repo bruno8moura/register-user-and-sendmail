@@ -1,3 +1,4 @@
+import { InvalidNameError } from '@/domain'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
 import { HttpResponse } from '@/interfaces/webcontrollers/ports/HttpResponse'
 import { RegisterUserUseCase } from '@/interfaces/webcontrollers/ports/RegisterUserUseCase'
@@ -17,7 +18,7 @@ const makeRegisterUserOnMailingList = (): RegisterUserUseCase => {
 
   class RegisterUserOnMailingListStub implements RegisterUserUseCase {
     async execute (request: Request): Promise<Response> {
-      return Promise.resolve({ value: { ...request } })
+      return Promise.resolve({ isLeft: () => false, isRight: () => true, value: { ...request } })
     }
   }
 
@@ -49,5 +50,28 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
 
     expect(statusCode).toBe(201)
     expect(body).toStrictEqual(request.body)
+  })
+
+  test('should return status code 400 when request contains invalid name', async () => {
+    const request: HttpRequest = {
+      body: {
+        name: 'invalid name',
+        email: 'any@email.com'
+      }
+    }
+
+    const { controller, useCase } = makeSut()
+
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(async () => {
+      return Promise.resolve({
+        isLeft: () => true,
+        isRight: () => false,
+        value: new InvalidNameError({ input: request.body.name })
+      })
+    })
+
+    const { statusCode }: HttpResponse = await controller.handle(request)
+
+    expect(statusCode).toBe(400)
   })
 })
