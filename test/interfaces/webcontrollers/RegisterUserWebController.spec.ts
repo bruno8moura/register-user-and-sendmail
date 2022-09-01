@@ -60,6 +60,11 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       }
     }
 
+    const expected = {
+      body: new InvalidNameError({ input: request.body.name }),
+      statusCode: 400
+    }
+
     const { controller, useCase } = makeSut()
 
     jest.spyOn(useCase, 'execute').mockImplementationOnce(async () => {
@@ -70,8 +75,8 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       })
     })
 
-    const { statusCode }: HttpResponse = await controller.handle(request)
+    const result: HttpResponse = await controller.handle(request)
 
-    expect(statusCode).toBe(400)
+    expect(result).toStrictEqual(expected)
   })
 })
