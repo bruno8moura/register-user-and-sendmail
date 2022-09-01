@@ -1,4 +1,3 @@
-import { InvalidEmailError, InvalidNameError } from '@/domain'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
 import { HttpResponse } from '@/interfaces/webcontrollers/ports/HttpResponse'
 import { RegisterUserUseCase } from '@/interfaces/webcontrollers/ports/RegisterUserUseCase'
@@ -61,7 +60,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new InvalidNameError({ input: request.body.name }),
+      body: new Error('An error!'),
       statusCode: 400
     }
 
@@ -71,7 +70,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
-        value: new InvalidNameError({ input: request.body.name })
+        value: new Error('An error!')
       })
     })
 
@@ -89,7 +88,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new InvalidEmailError({ input: request.body.email }),
+      body: new Error('An error!'),
       statusCode: 400
     }
 
@@ -99,7 +98,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
-        value: new InvalidEmailError({ input: request.body.email })
+        value: new Error('An error!')
       })
     })
 
