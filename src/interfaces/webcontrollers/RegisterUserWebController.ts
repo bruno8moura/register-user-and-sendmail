@@ -15,6 +15,10 @@ export class RegisterUserWebController {
         return HttpResponseHelper.badRequest({ error: new MissingParamError({ input: 'name' }) })
       }
 
+      if (!email) {
+        return HttpResponseHelper.badRequest({ error: new MissingParamError({ input: 'email' }) })
+      }
+
       const result = await this.useCase.execute({ name, email })
 
       if (result.isLeft()) {
