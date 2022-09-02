@@ -1,5 +1,6 @@
 import { HttpRequest, HttpResponse, RegisterUserUseCase } from '@/interfaces/webcontrollers/ports'
 import { HttpResponseHelper } from '@/interfaces/webcontrollers/helper/HttpResponseHelper'
+import { MissingParamError } from '../errors/MissingParamError'
 
 export class RegisterUserWebController {
     private readonly useCase: RegisterUserUseCase
@@ -9,6 +10,11 @@ export class RegisterUserWebController {
 
     async handle ({ body }: HttpRequest): Promise<HttpResponse> {
       const { name, email } = body
+
+      if (!name) {
+        return HttpResponseHelper.badRequest({ error: new MissingParamError({ input: 'name' }) })
+      }
+
       const result = await this.useCase.execute({ name, email })
 
       if (result.isLeft()) {
