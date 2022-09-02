@@ -126,4 +126,23 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
 
     expect(result).toStrictEqual(expected)
   })
+
+  test('should return status code 400 when request is missing user email', async () => {
+    const request: HttpRequest = {
+      body: {
+        name: 'Any Name'
+      }
+    }
+
+    const expected = {
+      body: new MissingParamError({ input: 'email' }),
+      statusCode: 400
+    }
+
+    const { controller } = makeSut()
+
+    const result: HttpResponse = await controller.handle(request)
+
+    expect(result).toStrictEqual(expected)
+  })
 })
