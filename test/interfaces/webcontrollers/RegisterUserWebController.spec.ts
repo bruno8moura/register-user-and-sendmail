@@ -1,3 +1,4 @@
+import { MissingParamError } from '@/interfaces/errors/MissingParamError'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
 import { HttpResponse } from '@/interfaces/webcontrollers/ports/HttpResponse'
 import { RegisterUserUseCase } from '@/interfaces/webcontrollers/ports/RegisterUserUseCase'
@@ -101,6 +102,25 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
         value: new Error('An error!')
       })
     })
+
+    const result: HttpResponse = await controller.handle(request)
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  test('should return status code 400 when request is missing user name', async () => {
+    const request: HttpRequest = {
+      body: {
+        email: 'any@email.com'
+      }
+    }
+
+    const expected = {
+      body: new MissingParamError({ input: 'name' }),
+      statusCode: 400
+    }
+
+    const { controller } = makeSut()
 
     const result: HttpResponse = await controller.handle(request)
 
