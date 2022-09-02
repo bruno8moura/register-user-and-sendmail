@@ -1,3 +1,4 @@
+import { InternalServerError } from '@/interfaces/errors/InternalServerError'
 import { MissingParamError } from '@/interfaces/errors/MissingParamError'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
 import { HttpResponse } from '@/interfaces/webcontrollers/ports/HttpResponse'
@@ -140,6 +141,28 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const { controller } = makeSut()
+
+    const result: HttpResponse = await controller.handle(request)
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  test('should return status code 500 when an "Internal Server Error" happens', async () => {
+    const expected = {
+      body: new InternalServerError(),
+      statusCode: 500
+    }
+
+    const request: HttpRequest = {
+      body: {
+        name: 'Any Name',
+        email: 'any@email.com'
+      }
+    }
+
+    const { controller, useCase } = makeSut()
+
+    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error('An error!') })
 
     const result: HttpResponse = await controller.handle(request)
 
