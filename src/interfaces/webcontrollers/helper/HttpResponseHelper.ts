@@ -14,4 +14,11 @@ export class HttpResponseHelper {
       body: error
     }
   }
+
+  static internalServerError ({ error }): HttpResponse {
+    return {
+      statusCode: 500,
+      body: error
+    }
+  }
 }
