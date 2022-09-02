@@ -2,7 +2,7 @@ export interface Params {
     input: string
 }
 
-export abstract class InvalidUserDataError extends Error {
+export abstract class AbstractError extends Error {
   constructor ({ input }: Params) {
     super(input)
   }

@@ -1,6 +1,6 @@
-import { InvalidUserDataError, Params } from '@/domain/errors/InvalidUserDataError'
+import { AbstractError, Params } from '@/shared/errors/AbstractError'
 
-export class InvalidEmailError extends InvalidUserDataError {
+export class InvalidEmailError extends AbstractError {
   constructor ({ input }: Params) {
     super({ input: `The email "${input}" is invalid` })
   }

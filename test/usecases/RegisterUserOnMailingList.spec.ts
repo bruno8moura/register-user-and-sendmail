@@ -1,4 +1,5 @@
-import { InvalidEmailError, InvalidNameError, EmailAlreadyRegisteredError, UserData } from '@/domain'
+import { InvalidEmailError, InvalidNameError, UserData } from '@/domain'
+import { EmailAlreadyRegisteredError } from '@/usecases/errors/EmailAlreadyRegisteredError'
 import { UserRepository } from '@/usecases/ports/UserRepository'
 import { RegisterUserOnMailingList } from '@/usecases/RegisterUserOnMailingList'
 

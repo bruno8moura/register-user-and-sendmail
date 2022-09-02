@@ -1,6 +1,6 @@
-import { InvalidUserDataError, Params } from '@/domain/errors'
+import { AbstractError, Params } from '@/shared/errors/AbstractError'
 
-export class EmailAlreadyRegisteredError extends InvalidUserDataError {
+export class EmailAlreadyRegisteredError extends AbstractError {
   constructor ({ input }: Params) {
     super({ input: `Email ${input} already registered` })
   }

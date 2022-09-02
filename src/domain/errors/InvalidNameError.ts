@@ -1,6 +1,6 @@
-import { InvalidUserDataError, Params } from '@/domain/errors/InvalidUserDataError'
+import { AbstractError, Params } from '@/shared/errors/AbstractError'
 
-export class InvalidNameError extends InvalidUserDataError {
+export class InvalidNameError extends AbstractError {
   constructor ({ input }: Params) {
     super({ input: `The name "${input}" is invalid` })
   }
