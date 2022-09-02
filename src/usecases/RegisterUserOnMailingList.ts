@@ -3,14 +3,15 @@ import { Either, left, right } from '@/shared/util/Either'
 import { UserRepository } from '@/usecases/ports/UserRepository'
 import { EmailAlreadyRegisteredError } from '@/usecases/errors/EmailAlreadyRegisteredError'
 import { AbstractError } from '@/shared/errors/AbstractError'
+import { UseCase } from '@/interfaces/webcontrollers/ports'
 
-export class RegisterUserOnMailingList {
+export class RegisterUserOnMailingList implements UseCase {
     private repository: UserRepository
     constructor (repository: UserRepository) {
       this.repository = repository
     }
 
-    async registerUserOnMailingList (request: UserData): Promise<Either<AbstractError, UserData>> {
+    async execute (request: UserData): Promise<Either<AbstractError, UserData>> {
       const foundUser = await this.repository.findUserByEmail(request.email)
       if (foundUser) return left(new EmailAlreadyRegisteredError({ input: request.email }))
 

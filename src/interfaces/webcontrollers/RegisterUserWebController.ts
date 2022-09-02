@@ -1,11 +1,11 @@
-import { HttpRequest, HttpResponse, RegisterUserUseCase } from '@/interfaces/webcontrollers/ports'
+import { HttpRequest, HttpResponse, UseCase } from '@/interfaces/webcontrollers/ports'
 import { HttpResponseHelper } from '@/interfaces/webcontrollers/helper/HttpResponseHelper'
 import { MissingParamError } from '../errors/MissingParamError'
 import { InternalServerError } from '../errors/InternalServerError'
 
 export class RegisterUserWebController {
-    private readonly useCase: RegisterUserUseCase
-    constructor (useCase: RegisterUserUseCase) {
+    private readonly useCase: UseCase
+    constructor (useCase: UseCase) {
       this.useCase = useCase
     }
 

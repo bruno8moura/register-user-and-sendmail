@@ -1,11 +1,9 @@
 import { InternalServerError } from '@/interfaces/errors/InternalServerError'
 import { MissingParamError } from '@/interfaces/errors/MissingParamError'
-import { HttpRequest } from '@/interfaces/webcontrollers/ports'
-import { HttpResponse } from '@/interfaces/webcontrollers/ports/HttpResponse'
-import { RegisterUserUseCase } from '@/interfaces/webcontrollers/ports/RegisterUserUseCase'
+import { HttpRequest, HttpResponse, UseCase } from '@/interfaces/webcontrollers/ports'
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
 
-const makeRegisterUserOnMailingList = (): RegisterUserUseCase => {
+const makeRegisterUserOnMailingList = (): UseCase => {
   interface Request {
       name: string,
       email: string
@@ -17,7 +15,7 @@ const makeRegisterUserOnMailingList = (): RegisterUserUseCase => {
     }
   }
 
-  class RegisterUserOnMailingListStub implements RegisterUserUseCase {
+  class RegisterUserOnMailingListStub implements UseCase {
     async execute (request: Request): Promise<Response> {
       return Promise.resolve({ isLeft: () => false, isRight: () => true, value: { ...request } })
     }
