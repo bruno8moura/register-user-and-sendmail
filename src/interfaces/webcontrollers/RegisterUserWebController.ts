@@ -1,7 +1,6 @@
 import { HttpRequest, HttpResponse, AddUser } from '@/interfaces/webcontrollers/ports'
 import { HttpResponseHelper } from '@/interfaces/webcontrollers/helper/HttpResponseHelper'
-import { MissingParamError } from '../errors/MissingParamError'
-import { InternalServerError } from '../errors/InternalServerError'
+import { MissingParamError, InternalServerError } from '@/interfaces/errors'
 
 export class RegisterUserWebController {
     private readonly addUser: AddUser
