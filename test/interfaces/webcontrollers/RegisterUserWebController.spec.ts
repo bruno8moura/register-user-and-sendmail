@@ -1,35 +1,27 @@
+import { UserData } from '@/domain/entities/UserData'
 import { InternalServerError } from '@/interfaces/errors/InternalServerError'
 import { MissingParamError } from '@/interfaces/errors/MissingParamError'
-import { HttpRequest, HttpResponse, UseCase } from '@/interfaces/webcontrollers/ports'
+import { HttpRequest, HttpResponse, AddUser } from '@/interfaces/webcontrollers/ports'
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
+import { AbstractError } from '@/shared/errors/AbstractError'
+import { Either } from '@/shared/util/Either'
 
-const makeRegisterUserOnMailingList = (): UseCase => {
-  interface Request {
-      name: string,
-      email: string
-  }
-  interface Response {
-    value:{
-      name: string,
-      email: string
+const makeRegisterUserOnMailingList = (): AddUser => {
+  class AddUserOnMailingListStub implements AddUser {
+    async execute (data: UserData): Promise<Either<AbstractError, UserData>> {
+      return Promise.resolve({ isLeft: () => false, isRight: () => true, value: { ...data } })
     }
   }
 
-  class RegisterUserOnMailingListStub implements UseCase {
-    async execute (request: Request): Promise<Response> {
-      return Promise.resolve({ isLeft: () => false, isRight: () => true, value: { ...request } })
-    }
-  }
-
-  return new RegisterUserOnMailingListStub()
+  return new AddUserOnMailingListStub()
 }
 
 const makeSut = () => {
-  const useCase = makeRegisterUserOnMailingList()
-  const controller: RegisterUserWebController = new RegisterUserWebController(useCase)
+  const AddUser = makeRegisterUserOnMailingList()
+  const controller: RegisterUserWebController = new RegisterUserWebController(AddUser)
 
   return {
-    useCase,
+    AddUser,
     controller
   }
 }
@@ -64,9 +56,9 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       statusCode: 400
     }
 
-    const { controller, useCase } = makeSut()
+    const { controller, AddUser } = makeSut()
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(async () => {
+    jest.spyOn(AddUser, 'execute').mockImplementationOnce(async () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
@@ -92,9 +84,9 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       statusCode: 400
     }
 
-    const { controller, useCase } = makeSut()
+    const { controller, AddUser } = makeSut()
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(async () => {
+    jest.spyOn(AddUser, 'execute').mockImplementationOnce(async () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
@@ -158,9 +150,9 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       }
     }
 
-    const { controller, useCase } = makeSut()
+    const { controller, AddUser } = makeSut()
 
-    jest.spyOn(useCase, 'execute').mockImplementationOnce(() => { throw new Error('An error!') })
+    jest.spyOn(AddUser, 'execute').mockImplementationOnce(() => { throw new Error('An error!') })
 
     const result: HttpResponse = await controller.handle(request)
 

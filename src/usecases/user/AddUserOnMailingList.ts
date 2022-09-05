@@ -3,9 +3,9 @@ import { Either, left, right } from '@/shared/util/Either'
 import { UserRepository } from '@/usecases/ports/UserRepository'
 import { EmailAlreadyRegisteredError } from '@/usecases/errors/EmailAlreadyRegisteredError'
 import { AbstractError } from '@/shared/errors/AbstractError'
-import { UseCase } from '@/interfaces/webcontrollers/ports'
+import { AddUser } from '@/usecases/user/AddUser'
 
-export class RegisterUserOnMailingList implements UseCase {
+export class AddUserOnMailingList implements AddUser {
     private repository: UserRepository
     constructor (repository: UserRepository) {
       this.repository = repository
