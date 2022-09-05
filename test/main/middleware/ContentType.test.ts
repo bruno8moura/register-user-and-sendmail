@@ -11,4 +11,15 @@ describe('Main :: Middleware :: ContentType', () => {
       .get('/test_content_type')
       .expect('content-type', /json/)
   })
+
+  test('should return another content when forced', async () => {
+    app.get('/test_content_type_xml', async (req, res) => {
+      res.type('xml')
+      res.send('')
+    })
+
+    await request(app)
+      .get('/test_content_type_xml')
+      .expect('content-type', /xml/)
+  })
 })
