@@ -1,7 +1,7 @@
 import { UserData, UserModel } from '@/domain'
 import { UserRepository } from '@/usecases'
 import { MongoHelper } from './helpers/MongoHelper'
-import { randomUUID } from 'crypto'
+import UserModelFactory from '@/domain/factories/UserModelFactory'
 
 export class MongodbUserRepository implements UserRepository {
   async exists (email: string): Promise<boolean> {
@@ -17,9 +17,9 @@ export class MongodbUserRepository implements UserRepository {
 
   async add (userData: UserData): Promise<UserModel> {
     const usersCollection = MongoHelper.getCollection('users')
-    const newUser: UserModel = { ...userData, id: randomUUID() }
-    await usersCollection.insertOne(newUser)
+    const userToDatabase: UserModel = UserModelFactory().toDatabaseUserModel(userData)
+    await usersCollection.insertOne(userToDatabase)
 
-    return MongoHelper.modelMap({ data: newUser })
+    return MongoHelper.modelMap({ data: userToDatabase })
   }
 }

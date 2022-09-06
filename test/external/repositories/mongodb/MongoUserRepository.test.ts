@@ -22,7 +22,7 @@ describe('External :: Repositories :: Mongodb :: MongoUserRepository', () => {
       email: 'any@mail.com'
     })
 
-    expect(Object.keys(addedUser)).toStrictEqual(['name', 'email', 'id'])
+    expect(Object.keys(addedUser)).toStrictEqual(['id', 'name', 'email'])
   })
 
   test('should user exists into database', async () => {
