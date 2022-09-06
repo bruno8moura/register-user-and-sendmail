@@ -1,5 +1,9 @@
 import { Collection, MongoClient } from 'mongodb'
 
+interface MapperProps {
+  data: any
+}
+
 export class MongoHelper {
     private static client = null as MongoClient
     static async connect (url: string): Promise<void> {
@@ -19,5 +23,12 @@ export class MongoHelper {
 
     static async clearCollection (name: string): Promise<void> {
       await MongoHelper.client.db().collection(name).deleteMany({})
+    }
+
+    static modelMap ({ data }: MapperProps): any {
+      const dataClone = { ...data }
+      delete dataClone._id
+
+      return dataClone
     }
 }
