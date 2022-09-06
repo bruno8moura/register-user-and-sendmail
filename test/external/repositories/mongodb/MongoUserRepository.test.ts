@@ -45,4 +45,14 @@ describe('External :: Repositories :: Mongodb :: MongoUserRepository', () => {
     const UUID_V4 = /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
     expect(new RegExp(UUID_V4).test(addedUser.id)).toBeTruthy()
   })
+
+  test('should find an previous registered user into database', async () => {
+    const userRepository: UserRepository = new MongodbUserRepository()
+    await userRepository.add({
+      name: 'Any Name',
+      email: 'any@mail.com'
+    })
+    const foundUser = await userRepository.findUserByEmail('any@mail.com')
+    expect(foundUser).toBeDefined()
+  })
 })
