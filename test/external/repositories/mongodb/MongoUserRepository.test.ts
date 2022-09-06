@@ -15,6 +15,16 @@ describe('External :: Repositories :: Mongodb :: MongoUserRepository', () => {
     await MongoHelper.disconnect()
   })
 
+  test('should add an user to database', async () => {
+    const userRepository: UserRepository = new MongodbUserRepository()
+    const addedUser = await userRepository.add({
+      name: 'Any Name',
+      email: 'any@mail.com'
+    })
+
+    expect(Object.keys(addedUser)).toStrictEqual(['name', 'email', 'id'])
+  })
+
   test('should user exists into database', async () => {
     const userRepository: UserRepository = new MongodbUserRepository()
     await userRepository.add({
