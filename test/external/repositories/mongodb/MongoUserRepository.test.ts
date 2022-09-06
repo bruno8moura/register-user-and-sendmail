@@ -34,4 +34,15 @@ describe('External :: Repositories :: Mongodb :: MongoUserRepository', () => {
 
     expect(await userRepository.exists('any@mail.com')).toBeTruthy()
   })
+
+  test('should "id" field has a valid UUID v4', async () => {
+    const userRepository: UserRepository = new MongodbUserRepository()
+    const addedUser = await userRepository.add({
+      name: 'Any Name',
+      email: 'any@mail.com'
+    })
+
+    const UUID_V4 = /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
+    expect(new RegExp(UUID_V4).test(addedUser.id)).toBeTruthy()
+  })
 })
