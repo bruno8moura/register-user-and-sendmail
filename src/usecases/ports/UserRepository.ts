@@ -1,8 +1,8 @@
 import { UserModel } from '@/domain'
-import { UserData } from '@/domain/entities/UserData'
+import { AddUserModel } from '@/usecases'
 
 export interface UserRepository {
     findUserByEmail(email: string): Promise<UserModel>
-    add(userData: UserData): Promise<UserModel>
+    add(addUserModel: AddUserModel): Promise<UserModel>
     exists(email: string): Promise<boolean>
 }

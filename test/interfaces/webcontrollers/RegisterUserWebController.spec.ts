@@ -1,15 +1,14 @@
-import { UserData } from '@/domain/entities/UserData'
 import { InternalServerError } from '@/interfaces/errors/InternalServerError'
 import { MissingParamError } from '@/interfaces/errors/MissingParamError'
-import { HttpRequest, HttpResponse, AddUser } from '@/interfaces/webcontrollers/ports'
+import { HttpRequest, HttpResponse, AddUser, AddUserModel } from '@/interfaces/webcontrollers/ports'
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
-import { AbstractError } from '@/domain/errors/AbstractError'
 import { Either } from '@/shared/util/Either'
+import { InvalidEmailError, InvalidNameError, UserModel } from '@/domain'
 
 const makeRegisterUserOnMailingList = (): AddUser => {
   class AddUserOnMailingListStub implements AddUser {
-    async execute (data: UserData): Promise<Either<AbstractError, UserData>> {
-      return Promise.resolve({ isLeft: () => false, isRight: () => true, value: { ...data } })
+    async execute (data: AddUserModel): Promise<Either<InvalidEmailError | InvalidNameError, UserModel>> {
+      return Promise.resolve({ isLeft: () => false, isRight: () => true, value: { ...data, id: 'any' } })
     }
   }
 
@@ -28,6 +27,11 @@ const makeSut = () => {
 
 describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
   test('should return status code 201 when request contains valid user data', async () => {
+    const expected: UserModel = {
+      id: 'any',
+      name: 'Any Name',
+      email: 'any@email.com'
+    }
     const request: HttpRequest = {
       body: {
         name: 'Any Name',
@@ -40,7 +44,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     const { statusCode, body }: HttpResponse = await controller.handle(request)
 
     expect(statusCode).toBe(201)
-    expect(body).toStrictEqual(request.body)
+    expect(body).toStrictEqual(expected)
   })
 
   test('should return status code 400 when request contains invalid name', async () => {

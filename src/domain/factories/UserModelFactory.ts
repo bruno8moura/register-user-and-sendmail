@@ -1,9 +1,10 @@
 import { randomUUID } from 'crypto'
-import { UserData } from '@/domain/entities'
+import { UserModel } from '@/domain/entities'
+import { AddUserModel } from '@/usecases/user/AddUser'
 
 export default () => ({
-  toDatabaseUserModel: (userData: UserData) => {
-    const { name, email } = userData
+  toDatabaseUserModel: (addUserModel: AddUserModel): UserModel => {
+    const { name, email } = addUserModel
 
     return {
       id: randomUUID(),

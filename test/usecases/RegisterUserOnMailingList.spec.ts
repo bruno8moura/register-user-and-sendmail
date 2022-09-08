@@ -1,8 +1,7 @@
 import { InvalidEmailError, InvalidNameError, UserModel } from '@/domain'
-import { UserData } from '@/domain/entities/UserData'
 import { EmailAlreadyRegisteredError } from '@/usecases/errors/EmailAlreadyRegisteredError'
 import { UserRepository } from '@/usecases/ports/UserRepository'
-import { AddUser } from '@/usecases/user/AddUser'
+import { AddUser, AddUserModel } from '@/usecases/user/AddUser'
 import { AddUserOnMailingList } from '@/usecases/user/AddUserOnMailingList'
 
 const makeInMemoryRepository = (): UserRepository => {
@@ -13,8 +12,8 @@ const makeInMemoryRepository = (): UserRepository => {
       return !!foundUser
     }
 
-    async add (userData: UserData): Promise<UserModel> {
-      const newUser = { ...userData, id: String(this.repository.length) }
+    async add (addUserModel: AddUserModel): Promise<UserModel> {
+      const newUser = { ...addUserModel, id: String(this.repository.length) }
       this.repository.push(newUser)
 
       return newUser
@@ -47,21 +46,23 @@ describe('Register use on mailing list use case', () => {
   })
 
   test('should return "undefined" if user is not found', async () => {
-    const name = 'any_name'
-    const email = 'any@email.com'
-    await useCase.execute({ name, email })
+    const obj: AddUserModel = {
+      name: 'any_name',
+      email: 'any@email.com'
+    }
+    await useCase.execute(obj)
     const user = await repository.findUserByEmail('any_other@email.com')
     expect(user).toBeUndefined()
   })
 
   test('should return user if user is found', async () => {
-    const expected = {
+    const expected: UserModel = {
       id: '0',
       name: 'any_name',
       email: 'any@email.com'
     }
 
-    const obj = {
+    const obj: AddUserModel = {
       name: 'any_name',
       email: 'any@email.com'
     }
@@ -72,32 +73,46 @@ describe('Register use on mailing list use case', () => {
   })
 
   test('should add user with complete data to mailing list', async () => {
-    const name = 'any_name'
-    const email = 'any@email.com'
-    const userData: UserData = { name, email }
-    const result = await useCase.execute(userData)
+    const expected: UserModel = {
+      id: '0',
+      name: 'any_name',
+      email: 'any@email.com'
+    }
 
-    expect(result.value).toBe(userData)
+    const obj: AddUserModel = {
+      name: 'any_name',
+      email: 'any@email.com'
+    }
+    const { value: result } = await useCase.execute(obj)
+
+    expect(result).toStrictEqual(expected)
   })
 
   test('should not add two users with same email', async () => {
-    const name = 'any_name'
-    const email = 'any@email.com'
-    const userData: UserData = { name, email }
-    const ok = await useCase.execute(userData)
-    expect(ok.value).toBe(userData)
+    const expectedSuccess: UserModel = {
+      id: '0',
+      name: 'any_name',
+      email: 'any@email.com'
+    }
 
-    const nOk = await useCase.execute(userData)
-    expect(nOk.value).toBeInstanceOf(EmailAlreadyRegisteredError)
-    expect((nOk.value as EmailAlreadyRegisteredError).message).toEqual(`Email ${email} already registered`)
+    const obj: AddUserModel = {
+      name: 'any_name',
+      email: 'any@email.com'
+    }
+    const { value: ok } = await useCase.execute(obj)
+    expect(ok).toStrictEqual(expectedSuccess)
+
+    const { value: nOk } = await useCase.execute(obj)
+    expect(nOk).toBeInstanceOf(EmailAlreadyRegisteredError)
+    expect((nOk as EmailAlreadyRegisteredError).message).toEqual(`Email ${obj.email} already registered`)
   })
 
   test('should not add user with invalid email to mailing list', async () => {
     const expected = new InvalidEmailError({ input: 'email.com' })
     const name = 'any_name'
     const email = 'email.com'
-    const userData: UserData = { name, email }
-    const result = (await useCase.execute(userData)).value
+    const addUserModel: AddUserModel = { name, email }
+    const result = (await useCase.execute(addUserModel)).value
     expect(result).toBeInstanceOf(InvalidEmailError)
     expect((result as InvalidEmailError).message).toEqual(`The email "${email}" is invalid`)
     expect(JSON.stringify(result)).toBe(JSON.stringify(expected))
@@ -107,8 +122,8 @@ describe('Register use on mailing list use case', () => {
     const expected = new InvalidNameError({ input: 'email.com' })
     const name = '0          '
     const email = 'any@email.com'
-    const userData: UserData = { name, email }
-    const result = (await useCase.execute(userData)).value
+    const addUserModel: AddUserModel = { name, email }
+    const result = (await useCase.execute(addUserModel)).value
     expect(result).toBeInstanceOf(InvalidNameError)
     expect((result as InvalidNameError).message).toEqual(`The name "${name}" is invalid`)
     expect(JSON.stringify(result)).toBe(JSON.stringify(expected))
