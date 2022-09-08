@@ -1,7 +1,7 @@
+import { InvalidEmailError, InvalidNameError } from '@/domain'
 import { UserData } from '@/domain/entities/UserData'
-import { AbstractError } from '@/domain/errors/AbstractError'
 import { Either } from '@/shared/util/Either'
 
 export interface AddUser {
-    execute(data: UserData): Promise<Either<AbstractError, UserData>>
+    execute(data: UserData): Promise<Either<InvalidEmailError | InvalidNameError, UserData>>
 }
