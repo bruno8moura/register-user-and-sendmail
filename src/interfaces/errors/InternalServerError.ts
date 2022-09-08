@@ -1,4 +1,4 @@
-import { AbstractError } from '@/shared/errors/AbstractError'
+import { AbstractError } from '@/domain/errors/AbstractError'
 
 export class InternalServerError extends AbstractError {
   constructor () {

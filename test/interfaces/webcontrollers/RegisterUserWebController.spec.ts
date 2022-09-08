@@ -3,7 +3,7 @@ import { InternalServerError } from '@/interfaces/errors/InternalServerError'
 import { MissingParamError } from '@/interfaces/errors/MissingParamError'
 import { HttpRequest, HttpResponse, AddUser } from '@/interfaces/webcontrollers/ports'
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
-import { AbstractError } from '@/shared/errors/AbstractError'
+import { AbstractError } from '@/domain/errors/AbstractError'
 import { Either } from '@/shared/util/Either'
 
 const makeRegisterUserOnMailingList = (): AddUser => {

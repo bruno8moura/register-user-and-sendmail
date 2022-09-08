@@ -2,7 +2,7 @@ import { User, UserData } from '@/domain'
 import { Either, left, right } from '@/shared/util/Either'
 import { UserRepository } from '@/usecases/ports/UserRepository'
 import { EmailAlreadyRegisteredError } from '@/usecases/errors/EmailAlreadyRegisteredError'
-import { AbstractError } from '@/shared/errors/AbstractError'
+import { AbstractError } from '@/domain/errors/AbstractError'
 import { AddUser } from '@/usecases/user/AddUser'
 
 export class AddUserOnMailingList implements AddUser {

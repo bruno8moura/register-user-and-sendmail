@@ -15,7 +15,7 @@ import {
   right
 } from '@/shared/util/Either'
 
-import { AbstractError } from '@/shared/errors/AbstractError'
+import { AbstractError } from '@/domain/errors/AbstractError'
 
 interface Params {
   name: string,

@@ -1,4 +1,4 @@
-import { AbstractError, Params } from '@/shared/errors/AbstractError'
+import { AbstractError, Params } from '@/domain/errors/AbstractError'
 
 export class InvalidNameError extends AbstractError {
   constructor ({ input }: Params) {
