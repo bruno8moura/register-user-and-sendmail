@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { Controller } from '@/interfaces/webcontrollers/Controller'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
+import { RouteAdapter } from '@/main/config/adapters/RouteAdapter'
 
-export class ExpressRouteAdapter {
-  async execute (controller: Controller): Promise<any> {
+export class ExpressRouteAdapter implements RouteAdapter {
+  execute (controller: Controller): any {
     return async (req: Request, res: Response) => {
       const { body } = req
       const httpRequest: HttpRequest = {
