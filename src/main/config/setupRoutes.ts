@@ -1,6 +1,6 @@
 import { Express } from 'express'
-import { routes } from '@/main/config/routes'
-import { router } from '@/main/config/routes/ExpressRouter'
+import { routes } from '@/main/routes'
+import { router } from '@/main/routes/ExpressRouter'
 
 interface Request{
   app: Express

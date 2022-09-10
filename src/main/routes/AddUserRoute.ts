@@ -1,8 +1,8 @@
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
 import { Router } from 'express'
-import { RouteAdapter } from '@/main/config/adapters/RouteAdapter'
+import { RouteAdapter } from '@/main/adapters/RouteAdapter'
 import { RegisterUserFactory } from './factories/controllers/RegisterUserFactory'
-import routePaths from '@/main/config/routes/RoutePaths'
+import routePaths from '@/main/routes/RoutePaths'
 
 export class AddUserRoute {
     private routeAdapter: RouteAdapter

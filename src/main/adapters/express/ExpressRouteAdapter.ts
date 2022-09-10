@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { Controller } from '@/interfaces/webcontrollers/Controller'
 import { HttpRequest } from '@/interfaces/webcontrollers/ports'
-import { RouteAdapter } from '@/main/config/adapters/RouteAdapter'
+import { RouteAdapter } from '@/main/adapters/RouteAdapter'
 
 export class ExpressRouteAdapter implements RouteAdapter {
   execute (controller: Controller): any {

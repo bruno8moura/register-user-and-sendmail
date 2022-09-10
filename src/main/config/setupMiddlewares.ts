@@ -1,5 +1,5 @@
 import { Express } from 'express'
-import { BodyParser, ContentType, Cors } from '@/main/config/middlewares'
+import { BodyParser, ContentType, Cors } from '@/main/middlewares'
 
 interface Request{
   app:Express
