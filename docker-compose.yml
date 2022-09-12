@@ -1,0 +1,12 @@
+version: "3.9"
+
+# docker run --name twd-clean-architecture-api -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root -d mongo:4.0.3
+services:
+  db:
+    image: mongo:4.0.3
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
