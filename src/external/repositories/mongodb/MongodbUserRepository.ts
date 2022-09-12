@@ -1,6 +1,6 @@
 import { UserModel } from '@/domain'
 import { UserRepository } from '@/usecases'
-import { MongoHelper } from './helpers/MongoHelper'
+import { MongoHelper } from '@/external/repositories/mongodb/helpers/MongoHelper'
 import UserModelFactory from '@/domain/factories/UserModelFactory'
 import { AddUserModel } from '@/usecases/user/AddUser'
 

@@ -1,4 +1,4 @@
-import { Left } from './Left'
+import { Left } from '@/shared/util/Either/Left'
 
 export class Right<L, A> {
     readonly value: A
