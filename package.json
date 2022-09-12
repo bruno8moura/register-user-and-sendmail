@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main/server.js",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --noStackTrace --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
-    "coverage": "c8 -c '.nycrc.json' -- npm run test",
-    "build": "rimraf dist && tsc -p tsconfig-build.json"
+    "coverage": "c8 -c '.nycrc.json' -- npm run test"
   },
   "keywords": [],
   "author": "brunomoura",
