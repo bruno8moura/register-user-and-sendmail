@@ -1,24 +1,27 @@
 import { HttpResponse } from '@/interfaces/webcontrollers/ports'
+interface Payload {
+  body: any
+}
 
 export class HttpResponseHelper {
-  static created ({ body }): HttpResponse {
+  static created ({ body }: Payload): HttpResponse {
     return {
       statusCode: 201,
       body
     }
   }
 
-  static badRequest ({ error }): HttpResponse {
+  static badRequest ({ body }: Payload): HttpResponse {
     return {
       statusCode: 400,
-      body: error
+      body
     }
   }
 
-  static internalServerError ({ error }): HttpResponse {
+  static internalServerError ({ body }: Payload): HttpResponse {
     return {
       statusCode: 500,
-      body: error
+      body
     }
   }
 }

@@ -56,7 +56,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new Error('An error!'),
+      body: new InvalidEmailError({ input: 'An error!' }),
       statusCode: 400
     }
 
@@ -66,7 +66,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
-        value: new Error('An error!')
+        value: new InvalidEmailError({ input: 'An error!' })
       })
     })
 
@@ -84,7 +84,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new Error('An error!'),
+      body: new InvalidEmailError({ input: 'An error!' }),
       statusCode: 400
     }
 
@@ -94,7 +94,7 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
-        value: new Error('An error!')
+        value: new InvalidEmailError({ input: 'An error!' })
       })
     })
 

@@ -14,22 +14,22 @@ export class RegisterUserWebController implements Controller {
         const { name, email } = body
 
         if (!name) {
-          return HttpResponseHelper.badRequest({ error: new MissingParamError({ input: 'name' }) })
+          return HttpResponseHelper.badRequest({ body: new MissingParamError({ input: 'name' }) })
         }
 
         if (!email) {
-          return HttpResponseHelper.badRequest({ error: new MissingParamError({ input: 'email' }) })
+          return HttpResponseHelper.badRequest({ body: new MissingParamError({ input: 'email' }) })
         }
 
         const result = await this.addUser.execute({ name, email })
 
         if (result.isLeft()) {
-          return HttpResponseHelper.badRequest({ error: result.value })
+          return HttpResponseHelper.badRequest({ body: result.value })
         }
 
         return HttpResponseHelper.created({ body: result.value })
       } catch (error) {
-        return HttpResponseHelper.internalServerError({ error: new InternalServerError() })
+        return HttpResponseHelper.internalServerError({ body: new InternalServerError() })
       }
     }
 }

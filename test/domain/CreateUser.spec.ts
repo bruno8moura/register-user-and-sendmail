@@ -9,8 +9,8 @@ describe('Domain :: CreateUser', () => {
       email: invalidEmail
     }).value as InvalidEmailError
 
-    expect(error.name).toEqual('InvalidEmailError')
-    expect(error.message).toEqual(expectedErrorMessage)
+    expect(error).toBeInstanceOf(InvalidEmailError)
+    expect(error.detail).toEqual(expectedErrorMessage)
   })
 
   test('should not create user with invalid name (too few characters)', () => {
@@ -21,8 +21,8 @@ describe('Domain :: CreateUser', () => {
       email: 'any@mail.com'
     }).value as InvalidNameError
 
-    expect(error.name).toEqual('InvalidNameError')
-    expect(error.message).toEqual(expectedErrorMessage)
+    expect(error).toBeInstanceOf(InvalidNameError)
+    expect(error.detail).toEqual(expectedErrorMessage)
   })
 
   test('should not create user with invalid name (too many characters)', () => {
@@ -33,8 +33,8 @@ describe('Domain :: CreateUser', () => {
       email: 'any@mail.com'
     }).value as InvalidNameError
 
-    expect(error.name).toEqual('InvalidNameError')
-    expect(error.message).toEqual(expectedErrorMessage)
+    expect(error).toBeInstanceOf(InvalidNameError)
+    expect(error.detail).toEqual(expectedErrorMessage)
   })
 
   test('should create user with valid data', () => {

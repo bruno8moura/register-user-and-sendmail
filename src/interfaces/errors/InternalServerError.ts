@@ -1,11 +1,8 @@
-import { AbstractError } from '@/domain/errors/AbstractError'
+import { AbstractError } from '@/domain'
 
 export class InternalServerError extends AbstractError {
   constructor () {
     super({ input: 'Internal Server Error' })
-  }
-
-  get name (): string {
-    return InternalServerError.name
+    this.errorType = 'server.error'
   }
 }

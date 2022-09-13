@@ -11,9 +11,9 @@ export class ExpressRouteAdapter implements RouteAdapter {
         body
       }
 
-      const { statusCode, body: payload } = await controller.handle(httpRequest)
+      const httpResponse = await controller.handle(httpRequest)
 
-      return res.status(statusCode).json(payload)
+      return res.status(httpResponse.statusCode).json(httpResponse.body)
     }
   }
 }
