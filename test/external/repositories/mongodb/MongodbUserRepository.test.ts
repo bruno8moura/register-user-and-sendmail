@@ -59,7 +59,7 @@ describe('External :: Repositories :: Mongodb :: MongoUserRepository', () => {
   test('should not find an inexistent user into database', async () => {
     const userRepository: UserRepository = new MongodbUserRepository()
 
-    const foundUser = await userRepository.findUserByEmail('any@mail.com')
+    const foundUser = await userRepository.findUserByEmail('asdfasdfasdf@mail.com')
     expect(foundUser).toBeNull()
   })
 })
