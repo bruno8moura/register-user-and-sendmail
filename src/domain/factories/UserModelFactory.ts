@@ -1,11 +1,13 @@
 import { randomUUID } from 'crypto'
 import { UserModel } from '@/domain/entities'
-import { AddUserModel } from '@/usecases/user/AddUser'
+
+interface Params {
+  name: string,
+  email: string
+}
 
 export default () => ({
-  toDatabaseUserModel: (addUserModel: AddUserModel): UserModel => {
-    const { name, email } = addUserModel
-
+  toDatabaseUserModel: ({ name, email }: Params): UserModel => {
     return {
       id: randomUUID(),
       name,

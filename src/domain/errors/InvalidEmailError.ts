@@ -1,8 +1,7 @@
-import { AbstractError, Params } from '@/domain/errors/AbstractError'
+import { BusinessError, Params } from '@/domain/errors/BusinessError'
 
-export class InvalidEmailError extends AbstractError {
+export class InvalidEmailError extends BusinessError {
   constructor ({ input }: Params) {
     super({ input: `The email "${input}" is invalid` })
-    this.errorType = 'client.error'
   }
 }

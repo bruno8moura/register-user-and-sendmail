@@ -15,8 +15,6 @@ import {
   right
 } from '@/shared/util/Either'
 
-import { AbstractError } from '@/domain/errors/AbstractError'
-
 interface Params {
   name: string,
   email: string
@@ -30,7 +28,7 @@ export class User {
     this.email = email
   }
 
-  static create ({ name, email }: Params): Either<AbstractError, User> {
+  static create ({ name, email }: Params): Either<InvalidEmailError | InvalidNameError, User> {
     const nameOrError = Name.create({ input: name })
     const emailOrError = Email.create({ input: email })
 

@@ -119,9 +119,9 @@ describe('Register use on mailing list use case', () => {
   })
 
   test('should not add user with invalid name to mailing list', async () => {
-    const expected = new InvalidNameError({ input: 'email.com' })
     const name = '0          '
     const email = 'any@email.com'
+    const expected = new InvalidNameError({ input: name })
     const addUserModel: AddUserModel = { name, email }
     const result = (await useCase.execute(addUserModel)).value
     expect(result).toBeInstanceOf(InvalidNameError)

@@ -3,7 +3,7 @@ export interface Params {
 }
 
 export type ErrorType = 'client.error' | 'server.error';
-export abstract class AbstractError extends Error {
+export abstract class AppError extends Error {
   errorType: ErrorType
   detail: string
 
