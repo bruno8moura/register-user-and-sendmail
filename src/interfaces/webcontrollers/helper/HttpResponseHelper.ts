@@ -1,4 +1,6 @@
 import { HttpResponse } from '@/interfaces/webcontrollers/ports'
+import { EnumHttpErrorType } from '../enums/EnumHttpErrorType'
+
 interface Payload {
   body: any
 }
@@ -14,14 +16,20 @@ export class HttpResponseHelper {
   static badRequest ({ body }: Payload): HttpResponse {
     return {
       statusCode: 400,
-      body
+      body: {
+        ...body,
+        errorType: EnumHttpErrorType.CLIENT_ERROR
+      }
     }
   }
 
   static internalServerError ({ body }: Payload): HttpResponse {
     return {
       statusCode: 500,
-      body
+      body: {
+        ...body,
+        errorType: EnumHttpErrorType.SERVER_ERROR
+      }
     }
   }
 }

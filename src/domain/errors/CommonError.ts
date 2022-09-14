@@ -2,9 +2,7 @@ export interface Params {
     input: string
 }
 
-export type ErrorType = 'client.error' | 'server.error';
-export abstract class AppError extends Error {
-  errorType: ErrorType
+export abstract class CommonError extends Error {
   detail: string
 
   constructor ({ input }: Params) {

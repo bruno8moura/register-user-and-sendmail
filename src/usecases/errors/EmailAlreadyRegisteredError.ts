@@ -1,8 +1,7 @@
-import { AppError, Params } from '@/usecases/errors/AppError'
+import { CommonError, Params } from '@/domain/errors/CommonError'
 
-export class EmailAlreadyRegisteredError extends AppError {
+export class EmailAlreadyRegisteredError extends CommonError {
   constructor ({ input }: Params) {
     super({ input: `Email ${input} already registered` })
-    this.errorType = 'client.error'
   }
 }

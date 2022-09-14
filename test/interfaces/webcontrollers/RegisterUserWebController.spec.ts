@@ -56,7 +56,10 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new InvalidEmailError({ input: 'An error!' }),
+      body: {
+        ...new InvalidEmailError({ input: 'An error!' }),
+        errorType: 'client.error'
+      },
       statusCode: 400
     }
 
@@ -84,7 +87,10 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new InvalidEmailError({ input: 'An error!' }),
+      body: {
+        ...new InvalidEmailError({ input: 'An error!' }),
+        errorType: 'client.error'
+      },
       statusCode: 400
     }
 
@@ -111,7 +117,10 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new MissingParamError({ input: 'name' }),
+      body: {
+        ...new MissingParamError({ input: 'name' }),
+        errorType: 'client.error'
+      },
       statusCode: 400
     }
 
@@ -130,7 +139,10 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     }
 
     const expected = {
-      body: new MissingParamError({ input: 'email' }),
+      body: {
+        ...new MissingParamError({ input: 'email' }),
+        errorType: 'client.error'
+      },
       statusCode: 400
     }
 
@@ -143,7 +155,10 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
 
   test('should return status code 500 when an "Internal Server Error" happens', async () => {
     const expected = {
-      body: new InternalServerError(),
+      body: {
+        ...new InternalServerError(),
+        errorType: 'server.error'
+      },
       statusCode: 500
     }
 
