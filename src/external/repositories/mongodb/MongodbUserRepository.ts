@@ -1,8 +1,8 @@
 import { UserModel } from '@/domain'
 import { UserRepository } from '@/usecases'
 import { MongoHelper } from '@/external/repositories/mongodb/helpers/MongoHelper'
-import UserModelFactory from '@/domain/factories/UserModelFactory'
 import { AddUserModel } from '@/usecases/user/AddUser'
+import UserModelFactory from '@/external/repositories/factories/UserModelFactory'
 
 export class MongodbUserRepository implements UserRepository {
   private getCollection () {
@@ -14,10 +14,10 @@ export class MongodbUserRepository implements UserRepository {
   }
 
   async add (addUserModel: AddUserModel): Promise<UserModel> {
-    const userToDatabase: UserModel = UserModelFactory().toDatabaseUserModel(addUserModel)
-    await this.getCollection().insertOne(userToDatabase)
+    const newUserModel = UserModelFactory().toDatabaseUserModel(addUserModel)
+    await this.getCollection().insertOne(newUserModel)
 
-    return MongoHelper.modelMap({ data: userToDatabase })
+    return MongoHelper.modelMap({ data: newUserModel })
   }
 
   async exists (email: string): Promise<boolean> {
