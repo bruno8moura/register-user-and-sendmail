@@ -1,6 +1,7 @@
 import { UserModel } from '@/domain'
 import { Either } from '@/shared/util/Either'
 import { IEmailSenderService, IEmailSenderServiceResponse } from '@/usecases/ports/IEmailSenderService'
+import EmailFactory from '@/usecases/email/factories/EmailFactory'
 
 export interface IResponse {
     sended: boolean,
@@ -20,22 +21,10 @@ export class SendEmailWithBonusAttached {
     }
 
     async execute ({ user }: IRequest): Promise<Either<Error, IResponse>> {
-      const { email: destination } = user
       const attachments = ['anAttachment']
-      const title = 'Welcome and enjoy your bonus!'
-      const body = `
-                    <html>
-                      Hello ${user.name}!\n
-                      Your bonus is attached.
-                    </html>
-                  `
+      const emailData = EmailFactory.buildEmailData(user, attachments)
 
-      const result = await this.emailSenderService.send({
-        destination,
-        body,
-        attachments,
-        title
-      })
+      const result = await this.emailSenderService.send(emailData)
 
       const value = result.value as IEmailSenderServiceResponse
 
