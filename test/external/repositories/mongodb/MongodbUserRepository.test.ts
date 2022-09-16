@@ -3,8 +3,8 @@ import { MongodbUserRepository } from '@/external/repositories/mongodb/MongodbUs
 import { UserRepository } from '@/usecases'
 
 describe('External :: Repositories :: Mongodb :: MongoUserRepository', () => {
-  beforeEach(() => {
-    MongoHelper.clearCollection('users')
+  beforeEach(async () => {
+    await MongoHelper.clearCollection('users')
   })
 
   beforeAll(async () => {
