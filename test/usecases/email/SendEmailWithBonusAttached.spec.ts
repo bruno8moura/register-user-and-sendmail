@@ -1,20 +1,16 @@
 import { UserModel } from '@/domain'
-import { Either } from '@/shared/util/Either'
+import { Either, right } from '@/shared/util/Either'
 import { IResponse, SendEmailWithBonusAttached } from '@/usecases/email/SendEmailWithBonusAttached'
 import { IEmailSenderService, IEmailSenderServiceResponse, IMessage } from '@/usecases/ports/IEmailSenderService'
 
 const makeEmailSenderServiceStub = (): IEmailSenderService => {
   class EmailSenderServiceStub implements IEmailSenderService {
     send (message: IMessage): Promise<Either<Error, IEmailSenderServiceResponse>> {
-      return Promise.resolve({
-        isLeft: () => false,
-        isRight: () => true,
-        value: {
-          destination: message.destination,
-          sended: true,
-          attached: true
-        }
-      })
+      return Promise.resolve(right({
+        destination: message.destination,
+        sended: true,
+        attached: true
+      }))
     }
   }
 
@@ -23,16 +19,12 @@ const makeEmailSenderServiceStub = (): IEmailSenderService => {
 
 describe('Usercase :: SendEmailWithBonusAttached', () => {
   test('should send an email with bonus attached', async () => {
-    const expected: Either<Error, IResponse> = {
-      isLeft: () => false,
-      isRight: () => true,
-      value: {
-        sended: true,
-        detail: 'Email has been sended to any@email.com',
-        destination: 'any@email.com',
-        attached: true
-      }
-    }
+    const expected: Either<Error, IResponse> = right({
+      sended: true,
+      detail: 'Email has been sended to any@email.com',
+      destination: 'any@email.com',
+      attached: true
+    })
 
     const emailSender = makeEmailSenderServiceStub()
 
