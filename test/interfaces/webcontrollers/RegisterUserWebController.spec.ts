@@ -63,10 +63,15 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       }
     }
 
-    const { controller } = makeSut()
+    const { controller, addUser, sendEmailWithBonusAttached } = makeSut()
+
+    jest.spyOn(addUser, 'execute')
+    jest.spyOn(sendEmailWithBonusAttached, 'execute')
 
     const { statusCode, body }: HttpResponse = await controller.handle(request)
 
+    expect(addUser.execute).toHaveBeenCalled()
+    expect(sendEmailWithBonusAttached.execute).toHaveBeenCalled()
     expect(statusCode).toBe(201)
     expect(body).toStrictEqual(expected)
   })
@@ -225,5 +230,48 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
     const result: HttpResponse = await controller.handle(request)
 
     expect(result).toStrictEqual(expected)
+  })
+
+  test('should return status code 201 even when email not send', async () => {
+    const expected: UserModel = {
+      id: 'any',
+      name: 'Any Name',
+      email: 'any@email.com'
+    }
+
+    const request: HttpRequest = {
+      body: {
+        name: 'Any Name',
+        email: 'any@email.com'
+      }
+    }
+
+    const { controller, addUser, sendEmailWithBonusAttached } = makeSut()
+
+    jest.spyOn(addUser, 'execute').mockResolvedValueOnce({
+      isLeft: () => false,
+      isRight: () => true,
+      value: {
+        ...expected
+      }
+    })
+
+    jest.spyOn(sendEmailWithBonusAttached, 'execute').mockResolvedValueOnce({
+      isLeft: () => true,
+      isRight: () => false,
+      value: {
+        attached: false,
+        destination: expected.email,
+        sended: false,
+        detail: 'any message'
+      }
+    })
+
+    const { body, statusCode }: HttpResponse = await controller.handle(request)
+
+    expect(body).toStrictEqual(expected)
+    expect(statusCode).toBe(201)
+    expect(sendEmailWithBonusAttached.execute).toHaveBeenCalledWith({ user: expected })
+    expect(sendEmailWithBonusAttached.execute).toHaveReturned()
   })
 })
