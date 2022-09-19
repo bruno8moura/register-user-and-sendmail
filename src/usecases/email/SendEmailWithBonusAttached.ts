@@ -1,7 +1,8 @@
 import { UserModel } from '@/domain'
-import { Either, right } from '@/shared/util/Either'
+import { Either, left, right } from '@/shared/util/Either'
 import { IEmailSenderService, IEmailSenderServiceResponse } from '@/usecases/ports/IEmailSenderService'
 import EmailFactory from '@/usecases/email/factories/EmailFactory'
+import { EmailNotSentError } from '../errors/EmailNotSentError'
 
 export interface IResponse {
   sended: boolean,
@@ -20,21 +21,25 @@ export class SendEmailWithBonusAttached {
     this.emailSenderService = emailSenderService
   }
 
-  async execute ({ user }: IRequest): Promise<Either<Error, IResponse>> {
-    const attachments = ['anAttachment']
+  async execute ({ user }: IRequest): Promise<Either<EmailNotSentError, IResponse>> {
+    const attachments = ['anAttachment'] // TODO attach a file!
     const emailData = EmailFactory.buildEmailData(user, attachments)
 
     const result = await this.emailSenderService.send(emailData)
 
-    const value = result.value as IEmailSenderServiceResponse
+    if (result.isLeft()) {
+      // TODO logger.error(result.value)
+      return left(new EmailNotSentError({ input: user.email }))
+    }
 
-    return Promise.resolve(
-      right({
-        sended: value.sended,
-        detail: `Email has been sended to ${value.destination}`,
-        destination: value.destination,
-        attached: value.attached
-      })
-    )
+    const value = result.value as IEmailSenderServiceResponse
+    const response = {
+      sended: value.sended,
+      detail: `Email has been sent to ${value.destination}`,
+      destination: value.destination,
+      attached: value.attached
+    }
+
+    return right(response)
   }
 }
