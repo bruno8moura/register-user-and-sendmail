@@ -10,7 +10,7 @@ export class AddUserOnMailingList implements AddUser {
       this.repository = repository
     }
 
-    async execute (request: AddUserModel): Promise<Either<InvalidEmailError | InvalidNameError, UserModel>> {
+    async execute (request: AddUserModel): Promise<Either<InvalidEmailError | InvalidNameError | EmailAlreadyRegisteredError, UserModel>> {
       const foundUser = await this.repository.findUserByEmail(request.email)
       if (foundUser) return left(new EmailAlreadyRegisteredError({ input: request.email }))
 
