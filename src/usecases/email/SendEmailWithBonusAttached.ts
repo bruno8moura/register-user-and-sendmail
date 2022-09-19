@@ -1,6 +1,6 @@
 import { UserModel } from '@/domain'
 import { Either, left, right } from '@/shared/util/Either'
-import { IEmailSenderService, IEmailSenderServiceResponse } from '@/usecases/ports/IEmailSenderService'
+import { IEmailSenderService } from '@/usecases/ports/IEmailSenderService'
 import EmailFactory from '@/usecases/email/factories/EmailFactory'
 import { EmailNotSentError } from '../errors/EmailNotSentError'
 
@@ -32,13 +32,8 @@ export class SendEmailWithBonusAttached {
       return left(new EmailNotSentError({ input: user.email }))
     }
 
-    const value = result.value as IEmailSenderServiceResponse
-    const response = {
-      sended: value.sended,
-      detail: `Email has been sent to ${value.destination}`,
-      destination: value.destination,
-      attached: value.attached
-    }
+    const response = EmailFactory
+      .buildSendEmailWithBonusAttachedResponse(result.value)
 
     return right(response)
   }
