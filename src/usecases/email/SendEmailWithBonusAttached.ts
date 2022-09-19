@@ -1,21 +1,10 @@
-import { UserModel } from '@/domain'
 import { Either, left, right } from '@/shared/util/Either'
 import { IEmailSenderService } from '@/usecases/ports/IEmailSenderService'
 import EmailFactory from '@/usecases/email/factories/EmailFactory'
-import { EmailNotSentError } from '../errors/EmailNotSentError'
+import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
+import { IRequest, IResponse, ISendEmail } from '@/usecases/email/ISendEmail'
 
-export interface IResponse {
-  sended: boolean,
-  detail: string,
-  destination: string,
-  attached: boolean
-}
-
-export interface IRequest {
-  user: UserModel,
-}
-
-export class SendEmailWithBonusAttached {
+export class SendEmailWithBonusAttached implements ISendEmail {
   private readonly emailSenderService: IEmailSenderService
   constructor (emailSenderService: IEmailSenderService) {
     this.emailSenderService = emailSenderService
