@@ -1,9 +1,12 @@
 import { InternalServerError } from '@/interfaces/errors/InternalServerError'
 import { MissingParamError } from '@/interfaces/errors/MissingParamError'
-import { HttpRequest, HttpResponse, AddUser, AddUserModel } from '@/interfaces/webcontrollers/ports'
+import { AddUser, AddUserModel, HttpRequest, HttpResponse } from '@/interfaces/webcontrollers/ports'
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
 import { Either } from '@/shared/util/Either'
 import { InvalidEmailError, InvalidNameError, UserModel } from '@/domain'
+import { IRequest, IResponse, ISendEmail } from '@/usecases/email/ISendEmail'
+import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
+import EmailFactory from '@/usecases/email/factories/EmailFactory'
 
 const makeRegisterUserOnMailingList = (): AddUser => {
   class AddUserOnMailingListStub implements AddUser {
@@ -15,12 +18,33 @@ const makeRegisterUserOnMailingList = (): AddUser => {
   return new AddUserOnMailingListStub()
 }
 
+const makeSendEmailwithBonusAttached = (): ISendEmail => {
+  class SendEmailWithBonusAttachedStub implements ISendEmail {
+    async execute ({ user }: IRequest): Promise<Either<EmailNotSentError, IResponse>> {
+      return Promise
+        .resolve({
+          isLeft: () => false,
+          isRight: () => true,
+          value: EmailFactory.buildSendEmailWithBonusAttachedResponse({
+            sended: true,
+            attached: true,
+            destination: user.email
+          })
+        })
+    }
+  }
+
+  return new SendEmailWithBonusAttachedStub()
+}
+
 const makeSut = () => {
-  const AddUser = makeRegisterUserOnMailingList()
-  const controller: RegisterUserWebController = new RegisterUserWebController(AddUser)
+  const addUser = makeRegisterUserOnMailingList()
+  const sendEmailWithBonusAttached = makeSendEmailwithBonusAttached()
+  const controller: RegisterUserWebController = new RegisterUserWebController(addUser, sendEmailWithBonusAttached)
 
   return {
-    AddUser,
+    addUser,
+    sendEmailWithBonusAttached,
     controller
   }
 }
@@ -63,9 +87,9 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       statusCode: 400
     }
 
-    const { controller, AddUser } = makeSut()
+    const { controller, addUser } = makeSut()
 
-    jest.spyOn(AddUser, 'execute').mockImplementationOnce(async () => {
+    jest.spyOn(addUser, 'execute').mockImplementationOnce(async () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
@@ -94,9 +118,9 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       statusCode: 400
     }
 
-    const { controller, AddUser } = makeSut()
+    const { controller, addUser } = makeSut()
 
-    jest.spyOn(AddUser, 'execute').mockImplementationOnce(async () => {
+    jest.spyOn(addUser, 'execute').mockImplementationOnce(async () => {
       return Promise.resolve({
         isLeft: () => true,
         isRight: () => false,
@@ -169,9 +193,34 @@ describe('Interfaces :: WebControllers :: RegisterUserWebController', () => {
       }
     }
 
-    const { controller, AddUser } = makeSut()
+    const { controller, addUser } = makeSut()
 
-    jest.spyOn(AddUser, 'execute').mockImplementationOnce(() => { throw new Error('An error!') })
+    jest.spyOn(addUser, 'execute').mockImplementationOnce(() => { throw new Error('An error!') })
+
+    const result: HttpResponse = await controller.handle(request)
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  test('should return status code 500 when email service is unavailable', async () => {
+    const expected = {
+      body: {
+        ...new InternalServerError(),
+        errorType: 'server.error'
+      },
+      statusCode: 500
+    }
+
+    const request: HttpRequest = {
+      body: {
+        name: 'Any Name',
+        email: 'any@email.com'
+      }
+    }
+
+    const { controller, sendEmailWithBonusAttached } = makeSut()
+
+    jest.spyOn(sendEmailWithBonusAttached, 'execute').mockImplementationOnce(() => { throw new Error('An error!') })
 
     const result: HttpResponse = await controller.handle(request)
 
