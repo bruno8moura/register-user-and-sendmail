@@ -1,7 +1,8 @@
 import { UserModel } from '@/domain'
 import { Either, left, right } from '@/shared/util/Either'
 import { Left } from '@/shared/util/Either/Left'
-import { IResponse, SendEmailWithBonusAttached } from '@/usecases/email/SendEmailWithBonusAttached'
+import { IResponse } from '@/usecases/email/ISendEmail'
+import { SendEmailWithBonusAttached } from '@/usecases/email/SendEmailWithBonusAttached'
 import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
 import { IEmailSenderService, IEmailSenderServiceResponse, IMessage } from '@/usecases/ports/IEmailSenderService'
 
