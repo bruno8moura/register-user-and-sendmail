@@ -1,6 +1,5 @@
 import { Either, left, right } from '@/shared/util/Either'
 import * as nodemailer from 'nodemailer'
-import { SendEmailError } from '../../errors/SendEmailError'
 
 interface AuthEmailServerConfiguration {
   user: string,
@@ -32,7 +31,7 @@ export class NodeMailerHelper {
     this.config = config
   }
 
-  async send (request: IRequest): Promise<Either<SendEmailError, IResponse>> {
+  async send (request: IRequest): Promise<Either<Error, IResponse>> {
     try {
       const transporter = nodemailer.createTransport({
         host: this.config.host,
@@ -54,7 +53,7 @@ export class NodeMailerHelper {
 
       return right({ sended: result.accepted.includes(request.to) })
     } catch (error) {
-      return left(new SendEmailError({ input: error.message }))
+      return left(error)
     }
   }
 }
