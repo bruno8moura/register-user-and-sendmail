@@ -1,4 +1,3 @@
-import { SendEmailError } from '@/external/mail-services/errors/SendEmailError'
 import { NodeMailerHelper } from '@/external/mail-services/nodemailer/helpers/NodeMailerHelper'
 
 jest.mock('nodemailer')
@@ -43,7 +42,7 @@ describe('External :: Mail-Services :: NodeMailer :: Helpers :: NodeMailerHelper
   })
 
   test('should return erro when email is not sent', async () => {
-    const expected = new SendEmailError({ input: 'An error happened' })
+    const expected = new Error('An error happened')
 
     const nodeMailerHelper = new NodeMailerHelper({
       host: 'any',
