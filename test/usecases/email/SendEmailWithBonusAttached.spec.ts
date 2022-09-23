@@ -4,11 +4,11 @@ import { Left } from '@/shared/util/Either/Left'
 import { IResponse } from '@/usecases/email/ISendEmail'
 import { SendEmailWithBonusAttached } from '@/usecases/email/SendEmailWithBonusAttached'
 import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
-import { IEmailSenderService, IEmailSenderServiceResponse, IMessage } from '@/usecases/ports/IEmailSenderService'
+import { IEmailSenderService, IEmailSenderServiceResponse, IRequest } from '@/usecases/ports/IEmailSenderService'
 
 const makeEmailSenderServiceStub = (): IEmailSenderService => {
   class EmailSenderServiceStub implements IEmailSenderService {
-    send (message: IMessage): Promise<Either<EmailNotSentError, IEmailSenderServiceResponse>> {
+    send (message: IRequest): Promise<Either<EmailNotSentError, IEmailSenderServiceResponse>> {
       return Promise.resolve(right({
         destination: message.destination,
         sended: true,
@@ -41,7 +41,7 @@ describe('Usercase :: SendEmailWithBonusAttached', () => {
       email: 'any@email.com'
     }
 
-    const result = await new SendEmailWithBonusAttached(emailSender).execute({
+    const result = await new SendEmailWithBonusAttached(emailSender, { email: 'from@email.com' }).execute({
       user
     })
 
@@ -51,17 +51,17 @@ describe('Usercase :: SendEmailWithBonusAttached', () => {
   })
 
   test('should not send an email with invalid email', async () => {
-    const expected = new EmailNotSentError({ input: 'any@email.com' })
+    const expected = new EmailNotSentError({ input: 'invalidEmail' })
 
     jest.spyOn(emailSender, 'send').mockResolvedValueOnce(left(expected))
 
     const user: UserModel = {
       id: '123abc',
       name: 'Any User',
-      email: 'any@email.com'
+      email: 'invalidEmail'
     }
 
-    const result = await new SendEmailWithBonusAttached(emailSender).execute({
+    const result = await new SendEmailWithBonusAttached(emailSender, { email: 'from@email.com' }).execute({
       user
     })
 

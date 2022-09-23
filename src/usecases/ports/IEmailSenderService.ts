@@ -1,10 +1,13 @@
 import { Either } from '@/shared/util/Either'
+import { SendEmailError } from '@/usecases/errors/SendEmailError'
 
-export interface IMessage {
+export interface IRequest {
+    from: string
     destination: string,
-    attachments: string[],
+    attachments: Object[],
     body: any,
-    title: string
+    title: string,
+    rawText: string
 }
 
 export interface IEmailSenderServiceResponse {
@@ -14,5 +17,5 @@ export interface IEmailSenderServiceResponse {
 }
 
 export interface IEmailSenderService {
-    send: (message: IMessage) => Promise<Either<Error, IEmailSenderServiceResponse>>
+    send: (request: IRequest) => Promise<Either<SendEmailError, IEmailSenderServiceResponse>>
 }
