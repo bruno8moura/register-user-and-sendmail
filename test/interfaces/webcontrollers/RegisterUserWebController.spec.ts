@@ -6,7 +6,7 @@ import { Either } from '@/shared/util/Either'
 import { InvalidEmailError, InvalidNameError, UserModel } from '@/domain'
 import { IRequest, IResponse, ISendEmail } from '@/usecases/email/ISendEmail'
 import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
-import EmailFactory from '@/usecases/email/factories/EmailFactory'
+import EmailContentFactory from '@/usecases/email/factories/EmailContentFactory'
 
 const makeRegisterUserOnMailingList = (): AddUser => {
   class AddUserOnMailingListStub implements AddUser {
@@ -25,7 +25,7 @@ const makeSendEmailwithBonusAttached = (): ISendEmail => {
         .resolve({
           isLeft: () => false,
           isRight: () => true,
-          value: EmailFactory.buildSendEmailWithBonusAttachedResponse({
+          value: EmailContentFactory.buildSendEmailWithBonusAttachedResponse({
             sended: true,
             attached: true,
             destination: user.email
