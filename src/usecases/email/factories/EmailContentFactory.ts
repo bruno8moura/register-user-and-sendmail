@@ -1,11 +1,11 @@
 import { UserModel } from '@/domain'
 import { IEmailSenderServiceResponse } from '@/usecases/ports/IEmailSenderService'
 
-export default class EmailFactory {
-  static buildContent (user: UserModel, from: string) {
+export default class EmailContentFactory {
+  static buildContent (user: UserModel, { from, attachedFilePath }) {
     const attachments = [{
-      filename: 'bonus-data.txt',
-      path: 'https://raw.githubusercontent.com/bruno8moura/register-user-and-sendmail/assets/email-attachment/bonus-data.txt'
+      filename: attachedFilePath.split('/')[attachedFilePath.split('/').length - 1],
+      path: attachedFilePath
     }]
 
     const rawText = `Hello ${user.name}!\n Your bonus is attached.\n`

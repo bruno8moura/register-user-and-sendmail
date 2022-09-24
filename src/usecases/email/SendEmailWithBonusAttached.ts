@@ -4,19 +4,20 @@ import EmailContentFactory from '@/usecases/email/factories/EmailContentFactory'
 import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
 import { IRequest, IResponse, ISendEmail } from '@/usecases/email/ISendEmail'
 
-interface ISenderAddress {
-  email: string
+interface IEmailConfigurations {
+  from: string,
+  attachedFilePath: string
 }
 export class SendEmailWithBonusAttached implements ISendEmail {
   private readonly emailSenderService: IEmailSenderService
-  private readonly senderAddress: ISenderAddress
-  constructor (emailSenderService: IEmailSenderService, senderAddress: ISenderAddress) {
+  private readonly emailConfigurations: IEmailConfigurations
+  constructor (emailSenderService: IEmailSenderService, emailConfigurations: IEmailConfigurations) {
     this.emailSenderService = emailSenderService
-    this.senderAddress = senderAddress
+    this.emailConfigurations = emailConfigurations
   }
 
   async execute ({ user }: IRequest): Promise<Either<EmailNotSentError, IResponse>> {
-    const emailData = EmailContentFactory.buildContent(user, this.senderAddress.email)
+    const emailData = EmailContentFactory.buildContent(user, this.emailConfigurations)
 
     const result = await this.emailSenderService.send(emailData)
 

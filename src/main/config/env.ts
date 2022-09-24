@@ -12,6 +12,7 @@ export const env = {
     }
   },
   email: {
-    SENDER: process.env.EMAIL_SENDER || 'any@mail.net'
+    SENDER: process.env.EMAIL_SENDER || 'any@mail.net',
+    ATTACHED_FILE_PATH: process.env.EMAIL_ATTACHED_FILE || '../../../assets/bonus-data.txt'
   }
 }

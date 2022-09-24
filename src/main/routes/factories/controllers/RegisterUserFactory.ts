@@ -20,8 +20,18 @@ export class RegisterUserFactory {
       }
     }
     const emailSenderService: IEmailSenderService = new EmailSenderService(emailServerConfiguration)
-    const sendEmailWithBonusAttached: ISendEmail = new SendEmailWithBonusAttached(emailSenderService, { email: env.email.SENDER })
-    const registerUserController: RegisterUserWebController = new RegisterUserWebController(addUser, sendEmailWithBonusAttached)
+    const sendEmailWithBonusAttached: ISendEmail =
+    new SendEmailWithBonusAttached(
+      emailSenderService,
+      {
+        from: env.email.SENDER,
+        attachedFilePath: env.email.ATTACHED_FILE_PATH
+      })
+    const registerUserController: RegisterUserWebController =
+    new RegisterUserWebController(
+      addUser,
+      sendEmailWithBonusAttached
+    )
 
     return registerUserController
   }
