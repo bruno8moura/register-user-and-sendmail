@@ -1,18 +1,18 @@
 export const env = {
   database: {
-    PORT: process.env.PORT || '3000',
-    MONGO_URL: process.env.MONGO_URL || 'mongodb://root:root@localhost:27017'
+    PORT: process.env.PORT,
+    MONGO_URL: process.env.MONGO_URL
   },
   smtpServer: {
-    HOST: process.env.SMTP_SERVER_URL || 'locahost',
-    PORT: process.env.SMTP_SERVER_PORT || '0000',
+    HOST: process.env.SMTP_SERVER_URL,
+    PORT: process.env.SMTP_SERVER_PORT,
     credentials: {
-      USER: process.env.SMTP_CREDENTIAL_USER || 'admin',
-      PASS: process.env.SMTP_CREDENTIAL_PASS || 'admin'
+      USER: process.env.SMTP_CREDENTIAL_USER,
+      PASS: process.env.SMTP_CREDENTIAL_PASS
     }
   },
   email: {
-    SENDER: process.env.EMAIL_SENDER || 'any@mail.net',
-    ATTACHED_FILE_PATH: process.env.EMAIL_ATTACHED_FILE || '../../../assets/bonus-data.txt'
+    SENDER: process.env.EMAIL_SENDER,
+    ATTACHED_FILE_PATH: process.env.EMAIL_ATTACHED_FILE
   }
 }
