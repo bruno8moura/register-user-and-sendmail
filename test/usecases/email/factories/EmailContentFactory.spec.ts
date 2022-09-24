@@ -5,8 +5,8 @@ describe('Usecases :: Email :: Factories :: EmailContentFactory', () => {
   describe('#buildEmailData', () => {
     test('should build all needed information to send email', () => {
       const attachments = [{
-        filename: 'bonus-data.txt',
-        path: 'https://raw.githubusercontent.com/bruno8moura/register-user-and-sendmail/assets/email-attachment/bonus-data.txt'
+        filename: 'bonus-filename',
+        path: '/1/2/3/bonus-filename'
       }]
 
       const rawText = 'Hello Any User!\n Your bonus is attached.\n'
@@ -26,7 +26,8 @@ describe('Usecases :: Email :: Factories :: EmailContentFactory', () => {
       }
 
       const from = 'from@email.com'
-      const result = EmailContentFactory.buildContent(user, from)
+      const attachedFilePath = '/1/2/3/bonus-filename'
+      const result = EmailContentFactory.buildContent(user, { from, attachedFilePath })
 
       expect(result).toStrictEqual(expected)
     })

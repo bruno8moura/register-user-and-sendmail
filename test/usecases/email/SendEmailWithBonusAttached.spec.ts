@@ -41,7 +41,7 @@ describe('Usercase :: SendEmailWithBonusAttached', () => {
       email: 'any@email.com'
     }
 
-    const result = await new SendEmailWithBonusAttached(emailSender, { email: 'from@email.com' }).execute({
+    const result = await new SendEmailWithBonusAttached(emailSender, { from: 'from@email.com', attachedFilePath: '/1/file' }).execute({
       user
     })
 
@@ -61,7 +61,7 @@ describe('Usercase :: SendEmailWithBonusAttached', () => {
       email: 'invalidEmail'
     }
 
-    const result = await new SendEmailWithBonusAttached(emailSender, { email: 'from@email.com' }).execute({
+    const result = await new SendEmailWithBonusAttached(emailSender, { from: 'from@email.com', attachedFilePath: '/1/file' }).execute({
       user
     })
 
