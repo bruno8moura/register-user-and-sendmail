@@ -4,11 +4,13 @@ The API was developed using concepts from *Clean Architecture*, *Domain-Driven D
 
 To run this project you will need to create a `.env` file at the root of your project with values for the following environment variables:
 
-* `EMAIL_HOST`
-* `EMAIL_PORT`
-* `EMAIL_USERNAME`
-* `EMAIL_PASSWORD`
-* `MONGO_URL`
 * `PORT`
+* `MONGO_URL`
+* `SMTP_SERVER_URL`
+* `SMTP_SERVER_PORT`
+* `SMTP_CREDENTIAL_USER`
+* `SMTP_CREDENTIAL_PASS`
+* `EMAIL_SENDER`
+* `EMAIL_ATTACHED_FILE`
 
-The `EMAIL_`* variables are used to send the e-mail to the registered user; `MONGO_URL` is where your MongoDB is located (*you can also create other implementations for the UserRepository for other specific databases if you like; the use cases were developed independent from specific database implementations*); and `PORT` is the port where your API will run.
+The `SMTP_`* variables are used to send the e-mail to the registered user; `MONGO_URL` is where your MongoDB is located (*you can also create other implementations for the UserRepository for other specific databases if you like; the use cases were developed independent from specific database implementations*); and `PORT` is the port where your API will run.
