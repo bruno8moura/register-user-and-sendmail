@@ -1,6 +1,8 @@
 export const env = {
+  server: {
+    PORT: process.env.PORT
+  },
   database: {
-    PORT: process.env.PORT,
     MONGO_URL: process.env.MONGO_URL
   },
   smtpServer: {
