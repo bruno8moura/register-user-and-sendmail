@@ -17,6 +17,9 @@ export class RegisterUserFactory {
       auth: {
         user: env.smtpServer.credentials.USER,
         pass: env.smtpServer.credentials.PASS
+      },
+      tls: {
+        ignore: env.smtpServer.tls.ignore
       }
     }
     const emailSenderService: IEmailSenderService = new EmailSenderService(emailServerConfiguration)

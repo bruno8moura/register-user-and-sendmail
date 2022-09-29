@@ -11,6 +11,9 @@ export const env = {
     credentials: {
       USER: process.env.SMTP_CREDENTIAL_USER,
       PASS: process.env.SMTP_CREDENTIAL_PASS
+    },
+    tls: {
+      ignore: Boolean(process.env.SMTP_IGNORE_TLS)
     }
   },
   email: {

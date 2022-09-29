@@ -12,13 +12,18 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
 interface AuthEmailServerConfiguration {
     user: string,
-    pass: string
+    pass: string,
+}
+
+interface TlsConfiguration {
+  ignore: boolean
 }
 
 export interface EmailServerConfiguration {
     host: string,
     port: string,
-    auth: AuthEmailServerConfiguration
+    auth: AuthEmailServerConfiguration,
+    tls: TlsConfiguration
 }
 
 export class EmailSenderService implements IEmailSenderService {
@@ -35,7 +40,8 @@ export class EmailSenderService implements IEmailSenderService {
           auth: {
             user: this.config.auth.user,
             pass: this.config.auth.pass
-          }
+          },
+          ignoreTLS: this.config.tls.ignore
         }
 
         const transporter = nodemailer.createTransport(options)
