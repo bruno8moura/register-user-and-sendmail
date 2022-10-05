@@ -18,9 +18,7 @@ export class RegisterUserFactory {
         user: env.smtpServer.credentials.USER,
         pass: env.smtpServer.credentials.PASS
       },
-      tls: {
-        ignore: env.smtpServer.tls.ignore
-      }
+      secure: env.smtpServer.SECURE
     }
     const emailSenderService: IEmailSenderService = new EmailSenderService(emailServerConfiguration)
     const sendEmailWithBonusAttached: ISendEmail =

@@ -15,15 +15,11 @@ interface AuthEmailServerConfiguration {
     pass: string,
 }
 
-interface TlsConfiguration {
-  ignore: boolean
-}
-
 export interface EmailServerConfiguration {
     host: string,
     port: string,
     auth: AuthEmailServerConfiguration,
-    tls: TlsConfiguration
+    secure: boolean
 }
 
 export class EmailSenderService implements IEmailSenderService {
@@ -41,7 +37,7 @@ export class EmailSenderService implements IEmailSenderService {
             user: this.config.auth.user,
             pass: this.config.auth.pass
           },
-          ignoreTLS: this.config.tls.ignore
+          secure: this.config.secure
         }
 
         const transporter = nodemailer.createTransport(options)

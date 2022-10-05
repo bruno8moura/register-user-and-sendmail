@@ -12,9 +12,7 @@ export const env = {
       USER: process.env.SMTP_CREDENTIAL_USER,
       PASS: process.env.SMTP_CREDENTIAL_PASS
     },
-    tls: {
-      ignore: Boolean(process.env.SMTP_IGNORE_TLS)
-    }
+    SECURE: process.env.ENV !== 'local'
   },
   email: {
     SENDER: process.env.EMAIL_SENDER,

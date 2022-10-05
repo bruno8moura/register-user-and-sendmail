@@ -1,0 +1,10 @@
+FROM node:latest
+
+ARG USER=node
+ARG WORKSPACE=/home/$USER/app
+
+WORKDIR $WORKSPACE
+
+COPY . $WORKSPACE
+
+RUN npm install

@@ -1,7 +1,17 @@
-version: "3.9"
+version: "3.7"
 
-# docker run --name twd-clean-architecture-api -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root -d mongo:4.0.3
 services:
+  smtp-server-mock:
+    build:
+      context: ./smtp-server-mock
+      dockerfile: Dockerfile-mock
+    command: npm start
+    environment:
+      - PORT=465
+    ports:
+      - 465:465
+    networks:
+      - backend
   db:
     image: mongo:4.0.3
     restart: always
@@ -10,3 +20,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
+    networks:
+      - backend
+
+networks:
+    backend:
+      driver: bridge
