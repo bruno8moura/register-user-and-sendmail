@@ -24,7 +24,8 @@ describe('External :: Mail-Services :: NodeMailer :: EmailSenderService', () => 
       auth: {
         user: 'any',
         pass: 'any'
-      }
+      },
+      secure: true
     })
 
     const result = await emailSenderService.send({
@@ -51,7 +52,8 @@ describe('External :: Mail-Services :: NodeMailer :: EmailSenderService', () => 
       auth: {
         user: 'any',
         pass: 'any'
-      }
+      },
+      secure: true
     })
 
     nodemailer.createTransport.mockReturnValue({
