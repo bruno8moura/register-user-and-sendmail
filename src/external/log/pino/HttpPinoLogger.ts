@@ -7,7 +7,8 @@ export default class HttpPinoLogger {
   private constructor (logger: PinoLogger) {
     this.httpLoggerImpl =
       pinoHttp({
-        logger: logger.pinoLoggerImpl
+        logger: logger.pinoLoggerImpl,
+        autoLogging: false
       })
   }
 
