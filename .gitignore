@@ -4,4 +4,4 @@ coverage
 tmp
 .nyc_output
 globalConfig.json
-.env
+.env*
