@@ -8,12 +8,14 @@ export default class HttpPinoLogger {
     this.httpLoggerImpl =
       pinoHttp({
         logger: logger.pinoLoggerImpl,
-        autoLogging: false
+        autoLogging: true
       })
   }
 
-  static getInstance (logger: PinoLogger): Readonly<HttpPinoLogger> {
+  static getInstance (logger?: PinoLogger): Readonly<HttpPinoLogger> {
     if (HttpPinoLogger.httpPinoLoggerInstance) return HttpPinoLogger.httpPinoLoggerInstance
+
+    if (!logger) throw Error('Logger is undefined.')
 
     HttpPinoLogger.httpPinoLoggerInstance = Object.freeze(new HttpPinoLogger(logger))
 

@@ -3,13 +3,16 @@ import { HttpResponseHelper } from '@/interfaces/webcontrollers/helper/HttpRespo
 import { MissingParamError, InternalServerError } from '@/interfaces/errors'
 import { Controller } from '@/interfaces/webcontrollers/Controller'
 import { ISendEmail } from '@/usecases/email/ISendEmail'
+import { ILogger } from '@/usecases/ports/ILogger'
 
 export class RegisterUserWebController implements Controller {
     private readonly addUser: AddUser
     private readonly sendEmailWithBonusAttached: ISendEmail
-    constructor (addUser: AddUser, sendEmailWithBonusAttached: ISendEmail) {
+    private readonly logger: ILogger
+    constructor (addUser: AddUser, sendEmailWithBonusAttached: ISendEmail, logger: ILogger) {
       this.addUser = addUser
       this.sendEmailWithBonusAttached = sendEmailWithBonusAttached
+      this.logger = logger
     }
 
     async handle ({ body }: HttpRequest): Promise<HttpResponse> {
@@ -30,10 +33,13 @@ export class RegisterUserWebController implements Controller {
           return HttpResponseHelper.badRequest({ body: result.value })
         }
 
-        await this.sendEmailWithBonusAttached.execute({ user: result.value })
+        const sendEmailResponse = await this.sendEmailWithBonusAttached.execute({ user: result.value })
+
+        this.logger.info({ data: sendEmailResponse })
 
         return HttpResponseHelper.created({ body: result.value })
       } catch (error) {
+        this.logger.error({ data: error })
         return HttpResponseHelper.internalServerError({ body: new InternalServerError() })
       }
     }

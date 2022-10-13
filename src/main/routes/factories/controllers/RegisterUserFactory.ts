@@ -1,3 +1,4 @@
+import { Logger } from '@/external/log/pino/Logger'
 import { EmailSenderService, EmailServerConfiguration } from '@/external/mail-services/nodemailer/EmailSenderService'
 import { MongodbUserRepository } from '@/external/repositories/mongodb/MongodbUserRepository'
 import { RegisterUserWebController } from '@/interfaces/webcontrollers/RegisterUserWebController'
@@ -9,6 +10,7 @@ import { IEmailSenderService } from '@/usecases/ports/IEmailSenderService'
 
 export class RegisterUserFactory {
   static create (): RegisterUserWebController {
+    const logger = new Logger()
     const repository = new MongodbUserRepository()
     const addUser = new AddUserOnMailingList(repository)
     const emailServerConfiguration: EmailServerConfiguration = {
@@ -31,7 +33,8 @@ export class RegisterUserFactory {
     const registerUserController: RegisterUserWebController =
     new RegisterUserWebController(
       addUser,
-      sendEmailWithBonusAttached
+      sendEmailWithBonusAttached,
+      logger
     )
 
     return registerUserController

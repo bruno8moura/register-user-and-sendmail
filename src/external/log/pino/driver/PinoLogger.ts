@@ -1,4 +1,5 @@
 import pino, { Logger } from 'pino'
+import { env } from '@/main/config/env'
 
 interface Options {
     level: 'debug' | 'info' | 'error'
@@ -8,7 +9,14 @@ export default class PinoLogger {
     pinoLoggerImpl: Logger
     private static pinoLoggerInstance: Readonly<PinoLogger>
     private constructor (options: Options) {
-      this.pinoLoggerImpl = pino(options)
+      if (env.server.env === 'local') {
+        this.pinoLoggerImpl = pino({
+          ...options,
+          transport: {
+            target: 'pino-pretty'
+          }
+        })
+      } else this.pinoLoggerImpl = pino(options)
     }
 
     static getInstance (options?: Options): Readonly<PinoLogger> {

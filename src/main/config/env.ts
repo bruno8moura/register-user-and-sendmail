@@ -1,6 +1,13 @@
+const loggerLevel = {
+  info: 'info',
+  error: 'error',
+  debug: 'debug'
+}
+
 export const env = {
   server: {
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    env: process.env.ENV
   },
   database: {
     MONGO_URL: process.env.MONGO_URL
@@ -17,5 +24,8 @@ export const env = {
   email: {
     SENDER: process.env.EMAIL_SENDER,
     ATTACHED_FILE_PATH: process.env.EMAIL_ATTACHED_FILE
+  },
+  LOGGER: {
+    level: loggerLevel[process.env.LOGGER_LEVEL]
   }
 }
