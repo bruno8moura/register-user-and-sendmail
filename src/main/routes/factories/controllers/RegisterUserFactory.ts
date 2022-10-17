@@ -10,7 +10,6 @@ import { IEmailSenderService } from '@/usecases/ports/IEmailSenderService'
 
 export class RegisterUserFactory {
   static create (): RegisterUserWebController {
-    const logger = new Logger()
     const repository = new MongodbUserRepository()
     const addUser = new AddUserOnMailingList(repository)
     const emailServerConfiguration: EmailServerConfiguration = {
@@ -30,6 +29,7 @@ export class RegisterUserFactory {
         from: env.email.SENDER,
         attachedFilePath: env.email.ATTACHED_FILE_PATH
       })
+    const logger = Logger.getInstance()
     const registerUserController: RegisterUserWebController =
     new RegisterUserWebController(
       addUser,

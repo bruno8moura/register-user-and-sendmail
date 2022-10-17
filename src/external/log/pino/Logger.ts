@@ -1,17 +1,26 @@
-import { ILogger, IRequest } from '@/usecases/ports/ILogger'
+import { ILogger } from '@/usecases/ports/ILogger'
 import PinoLogger from './driver/PinoLogger'
 
 export class Logger implements ILogger {
-  private readonly logger: Readonly<PinoLogger>
-  constructor () {
-    this.logger = PinoLogger.getInstance()
+  private readonly pinoLogger: Readonly<PinoLogger>
+  private static loggerInstance: Readonly<ILogger>
+  private constructor () {
+    this.pinoLogger = PinoLogger.getInstance()
   }
 
-  info (req: IRequest) {
-    this.logger.pinoLoggerImpl.info(req.data)
+  info (req: any) {
+    this.pinoLogger.pinoLoggerImpl.info(req)
   }
 
-  error (req: IRequest) {
-    this.logger.pinoLoggerImpl.error(req.data)
+  error (req: any) {
+    this.pinoLogger.pinoLoggerImpl.error(req)
+  }
+
+  static getInstance (): Readonly<ILogger> {
+    if (Logger.loggerInstance) return Logger.loggerInstance
+
+    Logger.loggerInstance = Object.freeze(new Logger())
+
+    return Logger.loggerInstance
   }
 }
