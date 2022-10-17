@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
-    "dev": "ts-node-dev --transpile-only -r dotenv/config -- src/main/server.ts",
+    "dev": "ts-node-dev --respawn --exit-child --clear --rs --inspect --transpile-only -r dotenv/config -- src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --noStackTrace --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
