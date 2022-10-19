@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main/server.js",
-    "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "start": "NODE_ENV=production node dist/main/server.js",
+    "build": "NODE_ENV=production rimraf dist && tsc -p tsconfig-build.json",
     "dev": "ts-node-dev --respawn --exit-child --clear --rs --inspect --transpile-only -r dotenv/config -- src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --noStackTrace --runInBand",
@@ -53,8 +53,5 @@
     "nodemailer": "6.7.8",
     "pino": "8.6.1",
     "pino-http": "8.2.1"
-  },
-  "_moduleAliases": {
-    "@": "dist"
   }
 }

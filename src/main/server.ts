@@ -1,4 +1,5 @@
 import 'module-alias/register'
+import './config/moduleAliases'
 import { MongoHelper } from '@/external/repositories/mongodb/helpers/MongoHelper'
 import { app } from '@/main/config/app'
 import { env } from '@/main/config/env'
