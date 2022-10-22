@@ -7,6 +7,21 @@ import { InvalidEmailError, InvalidNameError, UserModel } from '@/domain'
 import { IRequest, IResponse, ISendEmail } from '@/usecases/email/ISendEmail'
 import { EmailNotSentError } from '@/usecases/errors/EmailNotSentError'
 import EmailContentFactory from '@/usecases/email/factories/EmailContentFactory'
+import { ILogger } from '@/usecases/ports/ILogger'
+
+const makeLogger = (): ILogger => {
+  class LoggerStub implements ILogger {
+    info (req: any) {
+      console.log(req)
+    }
+
+    error (req: any) {
+      console.error(req)
+    }
+  }
+
+  return new LoggerStub()
+}
 
 const makeRegisterUserOnMailingList = (): AddUser => {
   class AddUserOnMailingListStub implements AddUser {
@@ -38,9 +53,10 @@ const makeSendEmailwithBonusAttached = (): ISendEmail => {
 }
 
 const makeSut = () => {
+  const logger = makeLogger()
   const addUser = makeRegisterUserOnMailingList()
   const sendEmailWithBonusAttached = makeSendEmailwithBonusAttached()
-  const controller: RegisterUserWebController = new RegisterUserWebController(addUser, sendEmailWithBonusAttached)
+  const controller: RegisterUserWebController = new RegisterUserWebController(addUser, sendEmailWithBonusAttached, logger)
 
   return {
     addUser,
