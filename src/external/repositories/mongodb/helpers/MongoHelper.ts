@@ -59,6 +59,7 @@ export class MongoHelper {
           const FIVE_SECONDS = 5000
           if (timePassed < FIVE_SECONDS) {
             MongoHelper.logger.error('Turn off the application')
+            // @ts-ignore
             return process.emit('SIGINT')
           }
         }
@@ -68,6 +69,7 @@ export class MongoHelper {
 
       client.on('serverClosed', function (event) {
         MongoHelper.logger.info('Mongodb connection is closed')
+        // @ts-ignore
         process.emit('SIGINT')
       })
     }
