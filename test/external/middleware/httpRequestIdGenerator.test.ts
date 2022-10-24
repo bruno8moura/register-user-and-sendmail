@@ -1,78 +1,20 @@
-import { genReqId } from '@/external/middleware/httpRequestIdGenerator'
-import crypto from 'crypto'
+import request from 'supertest'
+import { app } from '@/main/config'
 
 describe('External :: Middleware :: HttpRequesIdGenerator', () => {
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-  test('should generate a brand new uuid-v4 request id', () => {
-    const req = {
-      id: undefined,
-      headers: {}
-    }
+  test('should return a brand new generated uuid v4 into headers response', async () => {
+    app.post('/test_request_id', async (req, res) => {
+      res.status(201).send('')
+    })
 
-    const res = {
-      setHeader: () => {}
-    }
+    await request(app)
+      .post('/test_request_id')
+      .expect(201)
+      .then(response => {
+        const requestId = response.headers['x-request-id'] as string
+        const matchUuidV4 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
-    const uuidV4 = crypto.randomUUID()
-
-    jest.spyOn(crypto, 'randomUUID').mockImplementationOnce(() => uuidV4)
-    jest.spyOn(res, 'setHeader')
-
-    // @ts-ignore
-    const result = genReqId(req, res)
-
-    expect(crypto.randomUUID).toBeCalledTimes(1)
-    expect(res.setHeader).toBeCalledTimes(1)
-    expect(result).toBe(uuidV4)
-  })
-
-  test('should use request id already generated from req.id', () => {
-    const uuidV4 = 'b359111c-2474-49d8-93d8-7b7f0d31b84e'
-    const req = {
-      id: uuidV4,
-      headers: {
-        'x-request-id': uuidV4
-      }
-    }
-
-    const res = {
-      setHeader: () => {}
-    }
-
-    jest.spyOn(res, 'setHeader')
-
-    // @ts-ignore
-    const result = genReqId(req, res)
-
-    expect(crypto.randomUUID).toBeCalledTimes(0)
-    expect(res.setHeader).toBeCalledTimes(1)
-    expect(result).toBe(uuidV4)
-    expect(req.id).toBe(result)
-  })
-
-  test('should use request id already generated from "x-request-id" header', () => {
-    const uuidV4 = 'b359111c-2474-49d8-93d8-7b7f0d31b84e'
-    const req = {
-      id: undefined,
-      headers: {
-        'x-request-id': uuidV4
-      }
-    }
-
-    const res = {
-      setHeader: () => {}
-    }
-
-    jest.spyOn(res, 'setHeader')
-
-    // @ts-ignore
-    const result = genReqId(req, res)
-
-    expect(crypto.randomUUID).toBeCalledTimes(0)
-    expect(res.setHeader).toBeCalledTimes(1)
-    expect(result).toBe(uuidV4)
-    expect(req.id).toBe(undefined)
+        expect(matchUuidV4.test(requestId)).toBeTruthy()
+      })
   })
 })
