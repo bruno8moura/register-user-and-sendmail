@@ -17,4 +17,19 @@ describe('External :: Middleware :: HttpRequesIdGenerator', () => {
         expect(matchUuidV4.test(requestId)).toBeTruthy()
       })
   })
+
+  test('should return the same uuid v4 passed prior in request into header response', async () => {
+    app.post('/test_request_id', async (req, res) => {
+      res.status(201).send('')
+    })
+
+    await request(app)
+      .post('/test_request_id')
+      .set('x-request-id', '36de66f3-6f28-4f54-b68c-27c7050e10e4')
+      .expect(201)
+      .then(response => {
+        const requestId = response.headers['x-request-id'] as string
+        expect(requestId).toBe('36de66f3-6f28-4f54-b68c-27c7050e10e4')
+      })
+  })
 })
