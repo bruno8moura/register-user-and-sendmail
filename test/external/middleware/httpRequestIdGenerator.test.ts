@@ -1,0 +1,27 @@
+import { genReqId } from '@/external/middleware/httpRequestIdGenerator'
+import crypto from 'crypto'
+
+describe.only('External :: Middleware :: HttpRequesIdGenerator', () => {
+  test('should generate a brand new uuid-v4 request id', () => {
+    const req = {
+      id: undefined,
+      headers: {}
+    }
+
+    const res = {
+      setHeader: () => {}
+    }
+
+    const uuidV4 = crypto.randomUUID()
+
+    jest.spyOn(crypto, 'randomUUID').mockImplementationOnce(() => uuidV4)
+    jest.spyOn(res, 'setHeader')
+
+    // @ts-ignore
+    const result = genReqId(req, res)
+
+    expect(crypto.randomUUID).toBeCalledTimes(1)
+    expect(res.setHeader).toBeCalledTimes(1)
+    expect(result).toBe(uuidV4)
+  })
+})
