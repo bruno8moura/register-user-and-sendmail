@@ -1,6 +1,6 @@
 import PinoLogger from './PinoLogger'
 import pinoHttp, { HttpLogger } from 'pino-http'
-
+import { genReqId } from '@/external/middleware/httpRequestIdGenerator'
 export default class HttpPinoLogger {
   httpLoggerImpl: HttpLogger
   private static httpPinoLoggerInstance: Readonly<HttpPinoLogger>
@@ -8,7 +8,8 @@ export default class HttpPinoLogger {
     this.httpLoggerImpl =
       pinoHttp({
         logger: logger.pinoLoggerImpl,
-        autoLogging: true
+        autoLogging: true,
+        genReqId
       })
   }
 
